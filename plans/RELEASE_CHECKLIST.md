@@ -8,6 +8,20 @@
 - Run `npm run format:check`.
 - Package the `dist` directory.
 
+## GitHub Actions Package
+
+The repository includes `.github/workflows/release-extension.yml`.
+
+To create a package from GitHub:
+
+1. Open GitHub Actions.
+2. Run `Build Extension Package` manually, or push to `main`.
+3. Wait for the workflow to pass.
+4. Download the `devvocab-extension` artifact.
+5. Upload `devvocab-extension.zip` to the Chrome Web Store Developer Dashboard.
+
+The zip is created from inside `dist`, so `manifest.json` is at the archive root as required by Chrome Web Store.
+
 ## Chrome Extension Metadata
 
 - Name: `DevVocab`
