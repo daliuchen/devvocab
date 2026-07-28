@@ -1,6 +1,6 @@
-# devvocab
+# ReadTrace
 
-A context-first vocabulary browser extension for developers reading technical English articles.
+A source-aware reading memory browser extension for developers reading technical English articles.
 
 ## MVP Features
 

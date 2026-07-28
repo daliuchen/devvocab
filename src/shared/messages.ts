@@ -1,46 +1,46 @@
 import type { Locator, NewOccurrenceInput } from './models'
 
-export type DevVocabPingMessage = {
+export type ReadTracePingMessage = {
   type: 'DEVVOCAB_PING'
 }
 
-export type DevVocabPongResponse = {
+export type ReadTracePongResponse = {
   type: 'DEVVOCAB_PONG'
   href: string
 }
 
-export type DevVocabGetSelectionMessage = {
+export type ReadTraceGetSelectionMessage = {
   type: 'DEVVOCAB_GET_SELECTION'
 }
 
-export type DevVocabSaveSelectionMessage = {
+export type ReadTraceSaveSelectionMessage = {
   type: 'DEVVOCAB_SAVE_CURRENT_SELECTION'
 }
 
-export type DevVocabSelectionPayload = NewOccurrenceInput
+export type ReadTraceSelectionPayload = NewOccurrenceInput
 
-export type DevVocabSelectionResponse = {
+export type ReadTraceSelectionResponse = {
   type: 'DEVVOCAB_SELECTION'
-  payload: DevVocabSelectionPayload | null
+  payload: ReadTraceSelectionPayload | null
 }
 
-export type DevVocabSaveOccurrenceMessage = {
+export type ReadTraceSaveOccurrenceMessage = {
   type: 'DEVVOCAB_SAVE_OCCURRENCE'
-  payload: DevVocabSelectionPayload
+  payload: ReadTraceSelectionPayload
 }
 
-export type DevVocabSaveOccurrenceResponse = {
+export type ReadTraceSaveOccurrenceResponse = {
   type: 'DEVVOCAB_SAVE_RESULT'
   ok: boolean
   created?: boolean
   error?: string
 }
 
-export type DevVocabGetStatsMessage = {
+export type ReadTraceGetStatsMessage = {
   type: 'DEVVOCAB_GET_STATS'
 }
 
-export type DevVocabStatsResponse = {
+export type ReadTraceStatsResponse = {
   type: 'DEVVOCAB_STATS'
   totalWords: number
   dueReviews: number
@@ -51,29 +51,29 @@ export type DevVocabStatsResponse = {
   }>
 }
 
-export type DevVocabOpenPageMessage = {
+export type ReadTraceOpenPageMessage = {
   type: 'DEVVOCAB_OPEN_PAGE'
   page: 'vocabulary' | 'review'
 }
 
-export type DevVocabOpenSourceMessage = {
+export type ReadTraceOpenSourceMessage = {
   type: 'DEVVOCAB_OPEN_SOURCE'
   occurrenceId: string
 }
 
-export type DevVocabHighlightOccurrenceMessage = {
+export type ReadTraceHighlightOccurrenceMessage = {
   type: 'DEVVOCAB_HIGHLIGHT_OCCURRENCE'
   locator: Locator
 }
 
-export type DevVocabContentMessage =
-  | DevVocabPingMessage
-  | DevVocabGetSelectionMessage
-  | DevVocabSaveSelectionMessage
-  | DevVocabHighlightOccurrenceMessage
+export type ReadTraceContentMessage =
+  | ReadTracePingMessage
+  | ReadTraceGetSelectionMessage
+  | ReadTraceSaveSelectionMessage
+  | ReadTraceHighlightOccurrenceMessage
 
-export type DevVocabBackgroundMessage =
-  | DevVocabSaveOccurrenceMessage
-  | DevVocabGetStatsMessage
-  | DevVocabOpenPageMessage
-  | DevVocabOpenSourceMessage
+export type ReadTraceBackgroundMessage =
+  | ReadTraceSaveOccurrenceMessage
+  | ReadTraceGetStatsMessage
+  | ReadTraceOpenPageMessage
+  | ReadTraceOpenSourceMessage

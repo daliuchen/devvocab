@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "DevVocab",
-  "description": "Context-first vocabulary for developers reading technical English articles.",
+  "name": "ReadTrace",
+  "description": "Remember where technical words came from.",
   "version": "0.0.1",
   "permissions": ["contextMenus"],
   "action": {
-    "default_title": "DevVocab",
+    "default_title": "ReadTrace",
     "default_popup": "popup.html"
   },
   "background": {

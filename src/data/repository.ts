@@ -1,4 +1,4 @@
-import type { DevVocabDatabase } from './database'
+import type { ReadTraceDatabase } from './database'
 import type {
   Locator,
   MasteryState,
@@ -20,7 +20,7 @@ export type SaveOccurrenceResult = {
 }
 
 export async function saveOccurrence(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   input: NewOccurrenceInput,
   now = Date.now(),
 ): Promise<SaveOccurrenceResult> {
@@ -125,18 +125,18 @@ export async function saveOccurrence(
 }
 
 export async function getRecentWords(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   limit = 10,
 ): Promise<Word[]> {
   return db.words.orderBy('updatedAt').reverse().limit(limit).toArray()
 }
 
-export async function getAllWords(db: DevVocabDatabase): Promise<Word[]> {
+export async function getAllWords(db: ReadTraceDatabase): Promise<Word[]> {
   return db.words.orderBy('normalizedText').toArray()
 }
 
 export async function getOccurrencesByWord(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   wordId: string,
 ): Promise<Occurrence[]> {
   return db.occurrences
@@ -147,14 +147,14 @@ export async function getOccurrencesByWord(
 }
 
 export async function getDueReviews(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   now = Date.now(),
 ): Promise<Review[]> {
   return db.reviews.where('dueAt').belowOrEqual(now).sortBy('dueAt')
 }
 
 export async function getReviewCards(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   now = Date.now(),
 ): Promise<ReviewCard[]> {
   const reviews = await getDueReviews(db, now)
@@ -187,7 +187,7 @@ export async function getReviewCards(
 }
 
 export async function recordReviewOutcome(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   reviewId: string,
   outcome: ReviewOutcome,
   now = Date.now(),
@@ -232,7 +232,7 @@ export async function recordReviewOutcome(
 }
 
 export async function getOccurrenceWithLocator(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   occurrenceId: string,
 ): Promise<{ occurrence: Occurrence; locator: Locator } | null> {
   const [occurrence, locator] = await Promise.all([
@@ -251,7 +251,7 @@ export async function getOccurrenceWithLocator(
 }
 
 export async function getWordsWithOccurrences(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
 ): Promise<WordWithOccurrences[]> {
   const words = await getAllWords(db)
 
@@ -264,7 +264,7 @@ export async function getWordsWithOccurrences(
 }
 
 export async function updateWordMastery(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   wordId: string,
   mastery: MasteryState,
   now = Date.now(),
@@ -276,7 +276,7 @@ export async function updateWordMastery(
 }
 
 export async function updateOccurrenceDetails(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   occurrenceId: string,
   details: Pick<Occurrence, 'definition' | 'note'>,
   now = Date.now(),
@@ -289,7 +289,7 @@ export async function updateOccurrenceDetails(
 }
 
 export async function deleteOccurrence(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   occurrenceId: string,
 ): Promise<void> {
   await db.transaction(
@@ -323,7 +323,7 @@ export async function deleteOccurrence(
 }
 
 export async function deleteWord(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   wordId: string,
 ): Promise<void> {
   await db.transaction(

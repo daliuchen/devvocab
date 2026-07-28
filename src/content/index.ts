@@ -8,11 +8,11 @@ import {
 } from '../capture/text'
 import { findLocatorMatch } from '../capture/locator'
 import type {
-  DevVocabContentMessage,
-  DevVocabPongResponse,
-  DevVocabSaveOccurrenceResponse,
-  DevVocabSelectionPayload,
-  DevVocabSelectionResponse,
+  ReadTraceContentMessage,
+  ReadTracePongResponse,
+  ReadTraceSaveOccurrenceResponse,
+  ReadTraceSelectionPayload,
+  ReadTraceSelectionResponse,
 } from '../shared/messages'
 
 let popover: HTMLDivElement | null = null
@@ -20,10 +20,10 @@ let statusTimer: number | null = null
 
 chrome.runtime.onMessage.addListener(
   (
-    message: DevVocabContentMessage,
+    message: ReadTraceContentMessage,
     _sender,
     sendResponse: (
-      response: DevVocabPongResponse | DevVocabSelectionResponse,
+      response: ReadTracePongResponse | ReadTraceSelectionResponse,
     ) => void,
   ) => {
     if (message.type === 'DEVVOCAB_PING') {
@@ -122,7 +122,7 @@ async function saveCurrentSelection() {
     payload,
   })
 
-  const result = response as DevVocabSaveOccurrenceResponse
+  const result = response as ReadTraceSaveOccurrenceResponse
 
   if (result.ok) {
     showStatus(result.created ? 'Saved' : 'Already saved', 'success')
@@ -132,7 +132,7 @@ async function saveCurrentSelection() {
   showStatus(result.error ?? 'Save failed', 'error')
 }
 
-function buildSelectionPayload(): DevVocabSelectionPayload | null {
+function buildSelectionPayload(): ReadTraceSelectionPayload | null {
   const capture = extractSelectedText()
 
   if (!capture) {
@@ -177,8 +177,8 @@ function createSaveButton(onClick: () => void) {
   const button = document.createElement('button')
   button.type = 'button'
   button.textContent = '+'
-  button.title = 'Save to DevVocab'
-  button.ariaLabel = 'Save selected word to DevVocab'
+  button.title = 'Save to ReadTrace'
+  button.ariaLabel = 'Save selected word to ReadTrace'
   button.addEventListener('mousedown', (event) => {
     event.preventDefault()
   })
@@ -373,4 +373,4 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
-console.info('[DevVocab] content script ready')
+console.info('[ReadTrace] content script ready')

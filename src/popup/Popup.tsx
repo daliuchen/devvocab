@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import './Popup.css'
-import type { DevVocabStatsResponse } from '../shared/messages'
+import type { ReadTraceStatsResponse } from '../shared/messages'
 
 type PopupStats = Pick<
-  DevVocabStatsResponse,
+  ReadTraceStatsResponse,
   'totalWords' | 'dueReviews' | 'recentWords'
 >
 
@@ -17,7 +17,7 @@ function Popup() {
   useEffect(() => {
     chrome.runtime
       .sendMessage({ type: 'DEVVOCAB_GET_STATS' })
-      .then((response: DevVocabStatsResponse) => {
+      .then((response: ReadTraceStatsResponse) => {
         setStats({
           totalWords: response.totalWords,
           dueReviews: response.dueReviews,
@@ -44,8 +44,8 @@ function Popup() {
     <main className="popup-shell">
       <header className="popup-header">
         <div>
-          <h1 className="popup-title">DevVocab</h1>
-          <p className="popup-subtitle">Technical reading vocabulary</p>
+          <h1 className="popup-title">ReadTrace</h1>
+          <p className="popup-subtitle">Technical reading memory</p>
         </div>
         <span className="status-pill">MVP</span>
       </header>
@@ -75,7 +75,7 @@ function Popup() {
         </section>
       )}
 
-      <nav className="popup-actions" aria-label="DevVocab actions">
+      <nav className="popup-actions" aria-label="ReadTrace actions">
         <button
           className="popup-button"
           type="button"

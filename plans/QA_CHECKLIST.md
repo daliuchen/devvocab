@@ -1,4 +1,4 @@
-# DevVocab QA Checklist
+# ReadTrace QA Checklist
 
 Use this checklist before publishing or demoing the MVP.
 
@@ -31,7 +31,7 @@ Latest smoke result is recorded in [QA_SMOKE_RESULTS.json](QA_SMOKE_RESULTS.json
 4. Load the `dist` directory as an unpacked extension.
 5. Open a technical article.
 6. Select a word or phrase.
-7. Confirm the DevVocab popover appears without disrupting page layout.
+7. Confirm the ReadTrace popover appears without disrupting page layout.
 8. Click Save word.
 9. Open the popup and confirm saved word count updates.
 10. Open Vocabulary from the popup.

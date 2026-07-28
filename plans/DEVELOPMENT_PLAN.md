@@ -1,10 +1,10 @@
-# DevVocab Development Plan
+# ReadTrace Development Plan
 
-DevVocab is a context-first vocabulary browser extension for developers reading technical English articles. The product should help users capture unfamiliar words from real technical pages, preserve the original context, and review them later with source-aware flashcards.
+ReadTrace is a context-first vocabulary browser extension for developers reading technical English articles. The product should help users capture unfamiliar words from real technical pages, preserve the original context, and review them later with source-aware flashcards.
 
 ## Product Positioning
 
-DevVocab is not a generic dictionary. It is a developer-focused reading companion.
+ReadTrace is not a generic dictionary. It is a developer-focused reading companion.
 
 Core promise:
 
@@ -310,7 +310,7 @@ Deliverable:
 
 ## Open Product Decisions
 
-- Product name: `DevVocab`.
+- Product name: `ReadTrace`.
 - Phrase capture: selected phrases are supported as raw selected text in MVP.
 - Dictionary provider: MVP is manual-only, with a provider interface kept for later integrations.
 - Review scheduling: MVP uses a simple local review queue and mastery transitions, not full spaced repetition.

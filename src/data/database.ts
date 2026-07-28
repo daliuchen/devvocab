@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { Locator, Occurrence, Review, Word } from '../shared/models'
 
-export class DevVocabDatabase extends Dexie {
+export class ReadTraceDatabase extends Dexie {
   words!: EntityTable<Word, 'id'>
   occurrences!: EntityTable<Occurrence, 'id'>
   locators!: EntityTable<Locator, 'occurrenceId'>
@@ -20,4 +20,4 @@ export class DevVocabDatabase extends Dexie {
   }
 }
 
-export const db = new DevVocabDatabase()
+export const db = new ReadTraceDatabase()

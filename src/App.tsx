@@ -4,8 +4,8 @@ function App() {
   return (
     <main className="app-shell">
       <section className="intro-panel">
-        <p className="eyebrow">DevVocab</p>
-        <h1>Context-first vocabulary for technical reading.</h1>
+        <p className="eyebrow">ReadTrace</p>
+        <h1>Trace technical reading back to its source.</h1>
         <p className="intro-copy">
           Save unfamiliar words from engineering articles with their source
           sentence, page URL, and review state.

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { DevVocabDatabase } from './database'
+import { ReadTraceDatabase } from './database'
 import { exportAsJson, exportAsMarkdown } from './export'
 import {
   getAllWords,
@@ -18,10 +18,10 @@ import type {
 } from '../shared/models'
 import { normalizeWord } from '../shared/normalize'
 
-const databases: DevVocabDatabase[] = []
+const databases: ReadTraceDatabase[] = []
 
 function createDatabase() {
-  const db = new DevVocabDatabase(`devvocab-test-${databases.length}`)
+  const db = new ReadTraceDatabase(`devvocab-test-${databases.length}`)
   databases.push(db)
   return db
 }
@@ -62,7 +62,7 @@ describe('normalizeWord', () => {
   })
 })
 
-describe('DevVocabDatabase', () => {
+describe('ReadTraceDatabase', () => {
   it('opens the IndexedDB schema with core tables', async () => {
     const db = createDatabase()
     await db.open()
@@ -250,7 +250,7 @@ describe('export helpers', () => {
 
     const markdown = await exportAsMarkdown(db)
 
-    expect(markdown).toContain('# DevVocab Export')
+    expect(markdown).toContain('# ReadTrace Export')
     expect(markdown).toContain('## trait')
     expect(markdown).toContain(
       'Sentence: A trait defines shared behavior in Rust.',

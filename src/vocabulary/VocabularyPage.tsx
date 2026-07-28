@@ -128,7 +128,7 @@ function VocabularyPage() {
     const url = URL.createObjectURL(new Blob([content], { type: mime }))
     const link = document.createElement('a')
     link.href = url
-    link.download = `devvocab-export.${extension}`
+    link.download = `readtrace-export.${extension}`
     link.click()
     URL.revokeObjectURL(url)
   }

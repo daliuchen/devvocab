@@ -1,4 +1,4 @@
-# DevVocab Task Breakdown
+# ReadTrace Task Breakdown
 
 This file breaks the MVP development plan into executable tasks. Task status should be updated as implementation progresses.
 
@@ -49,7 +49,7 @@ Recommended task shape:
 | ----- | ------ | --------------------------------------------- | ---------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | F1-01 | done   | Scaffold Vite, React, and TypeScript project. | None       | `npm install`, `npm run dev`, and `npm run build` work.                    | Run install, dev startup, and production build locally.                |
 | F1-02 | done   | Add Manifest V3 extension structure.          | F1-01      | Build output contains a valid `manifest.json` loadable by Chrome.          | Load `dist` as an unpacked extension in Chrome.                        |
-| F1-03 | done   | Add popup entrypoint.                         | F1-02      | Extension popup renders a basic DevVocab screen.                           | Open extension popup manually after loading unpacked extension.        |
+| F1-03 | done   | Add popup entrypoint.                         | F1-02      | Extension popup renders a basic ReadTrace screen.                          | Open extension popup manually after loading unpacked extension.        |
 | F1-04 | done   | Add vocabulary page entrypoint.               | F1-02      | Extension can open a vocabulary page route or HTML entry.                  | Open vocabulary page from extension URL and confirm no console errors. |
 | F1-05 | done   | Add review page entrypoint.                   | F1-02      | Extension can open a review page route or HTML entry.                      | Open review page from extension URL and confirm no console errors.     |
 | F1-06 | done   | Add background service worker.                | F1-02      | Service worker starts without runtime errors.                              | Inspect extension service worker console in Chrome.                    |

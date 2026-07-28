@@ -1,7 +1,7 @@
-import type { DevVocabDatabase } from './database'
+import type { ReadTraceDatabase } from './database'
 import type { Locator, Occurrence, Review, Word } from '../shared/models'
 
-export type DevVocabExport = {
+export type ReadTraceExport = {
   exportedAt: string
   words: Word[]
   occurrences: Occurrence[]
@@ -10,10 +10,10 @@ export type DevVocabExport = {
 }
 
 export async function exportAsJson(
-  db: DevVocabDatabase,
+  db: ReadTraceDatabase,
   now = new Date(),
 ): Promise<string> {
-  const payload: DevVocabExport = {
+  const payload: ReadTraceExport = {
     exportedAt: now.toISOString(),
     words: await db.words.toArray(),
     occurrences: await db.occurrences.toArray(),
@@ -24,7 +24,7 @@ export async function exportAsJson(
   return `${JSON.stringify(payload, null, 2)}\n`
 }
 
-export async function exportAsMarkdown(db: DevVocabDatabase): Promise<string> {
+export async function exportAsMarkdown(db: ReadTraceDatabase): Promise<string> {
   const words = await db.words.orderBy('normalizedText').toArray()
   const sections = await Promise.all(
     words.map(async (word) => {
@@ -51,5 +51,5 @@ export async function exportAsMarkdown(db: DevVocabDatabase): Promise<string> {
     }),
   )
 
-  return ['# DevVocab Export', '', ...sections].join('\n\n').trimEnd() + '\n'
+  return ['# ReadTrace Export', '', ...sections].join('\n\n').trimEnd() + '\n'
 }

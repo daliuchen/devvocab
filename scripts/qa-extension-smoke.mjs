@@ -25,7 +25,7 @@ const sites = [
   },
 ]
 
-const profileDir = await mkdtemp(join(tmpdir(), 'devvocab-qa-profile-'))
+const profileDir = await mkdtemp(join(tmpdir(), 'readtrace-qa-profile-'))
 await mkdir(profileDir, { recursive: true })
 
 const results = {

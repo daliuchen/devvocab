@@ -6,16 +6,16 @@ import {
   saveOccurrence,
 } from '../data/repository'
 import type {
-  DevVocabBackgroundMessage,
-  DevVocabSaveOccurrenceResponse,
-  DevVocabStatsResponse,
+  ReadTraceBackgroundMessage,
+  ReadTraceSaveOccurrenceResponse,
+  ReadTraceStatsResponse,
 } from '../shared/messages'
 import type { Locator } from '../shared/models'
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'devvocab-save-selection',
-    title: 'Save to DevVocab',
+    title: 'Save to ReadTrace',
     contexts: ['selection'],
   })
 })
@@ -30,10 +30,10 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 chrome.runtime.onMessage.addListener(
   (
-    message: DevVocabBackgroundMessage,
+    message: ReadTraceBackgroundMessage,
     _sender,
     sendResponse: (
-      response: DevVocabSaveOccurrenceResponse | DevVocabStatsResponse,
+      response: ReadTraceSaveOccurrenceResponse | ReadTraceStatsResponse,
     ) => void,
   ) => {
     if (message.type === 'DEVVOCAB_SAVE_OCCURRENCE') {
@@ -163,6 +163,6 @@ async function sendHighlightWhenReady(
   }
 }
 
-console.info('[DevVocab] background service worker ready')
+console.info('[ReadTrace] background service worker ready')
 
 export {}
