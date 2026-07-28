@@ -20,6 +20,13 @@ To create a package from GitHub:
 4. Download the `devvocab-extension` artifact.
 5. Upload `devvocab-extension.zip` to the Chrome Web Store Developer Dashboard.
 
+To publish a GitHub Release package:
+
+1. Create and push a version tag, for example `v0.1.0`.
+2. Wait for `Build Extension Package` to pass for that tag.
+3. Confirm the workflow created or updated the matching GitHub Release.
+4. Confirm `devvocab-extension.zip` is attached to the Release assets.
+
 The zip is created from inside `dist`, so `manifest.json` is at the archive root as required by Chrome Web Store.
 
 ## Chrome Extension Metadata
