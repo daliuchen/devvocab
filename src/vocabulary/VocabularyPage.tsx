@@ -223,7 +223,14 @@ function VocabularyPage() {
               <div className="detail-header">
                 <div>
                   <p className="page-kicker">Selected word</p>
-                  <h2>{selectedItem.word.text}</h2>
+                  <button
+                    className="word-title-button"
+                    type="button"
+                    title="Open the original page and highlight this occurrence"
+                    onClick={() => handleOpenSource(selectedOccurrence.id)}
+                  >
+                    {selectedItem.word.text}
+                  </button>
                 </div>
                 <select
                   className="filter-select"
@@ -248,6 +255,7 @@ function VocabularyPage() {
                     key={occurrence.id}
                     type="button"
                     data-selected={occurrence.id === selectedOccurrence.id}
+                    title={`Select occurrence from ${occurrence.domain}`}
                     onClick={() => setSelectedOccurrenceId(occurrence.id)}
                   >
                     {occurrence.domain}
@@ -256,13 +264,22 @@ function VocabularyPage() {
               </div>
 
               <blockquote>{selectedOccurrence.sentence}</blockquote>
-              <button
-                className="source-link"
-                type="button"
-                onClick={() => handleOpenSource(selectedOccurrence.id)}
-              >
-                {selectedOccurrence.pageTitle}
-              </button>
+              <div className="source-actions">
+                <button
+                  className="source-open-button"
+                  type="button"
+                  onClick={() => handleOpenSource(selectedOccurrence.id)}
+                >
+                  Open source
+                </button>
+                <button
+                  className="source-link"
+                  type="button"
+                  onClick={() => handleOpenSource(selectedOccurrence.id)}
+                >
+                  {selectedOccurrence.pageTitle}
+                </button>
+              </div>
               <p className="meta-line">
                 {selectedOccurrence.domain} ·{' '}
                 {new Date(selectedOccurrence.createdAt).toLocaleString()}

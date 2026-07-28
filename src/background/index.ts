@@ -10,6 +10,7 @@ import type {
   DevVocabSaveOccurrenceResponse,
   DevVocabStatsResponse,
 } from '../shared/messages'
+import type { Locator } from '../shared/models'
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
@@ -111,6 +112,7 @@ async function openSourceOccurrence(occurrenceId: string) {
     }
 
     const tabId = tab.id
+    let hasSentHighlight = false
     const listener = (
       updatedTabId: number,
       changeInfo: { status?: string },
@@ -120,14 +122,45 @@ async function openSourceOccurrence(occurrenceId: string) {
       }
 
       chrome.tabs.onUpdated.removeListener(listener)
-      chrome.tabs.sendMessage(tabId, {
-        type: 'DEVVOCAB_HIGHLIGHT_OCCURRENCE',
-        locator: result.locator,
+      void sendHighlightWhenReady(tabId, result.locator, () => {
+        hasSentHighlight = true
       })
     }
 
     chrome.tabs.onUpdated.addListener(listener)
+
+    globalThis.setTimeout(() => {
+      if (!hasSentHighlight) {
+        void sendHighlightWhenReady(tabId, result.locator, () => {
+          hasSentHighlight = true
+          chrome.tabs.onUpdated.removeListener(listener)
+        })
+      }
+    }, 300)
   })
+}
+
+async function sendHighlightWhenReady(
+  tabId: number,
+  locator: Locator,
+  onSent: () => void,
+  attemptsRemaining = 20,
+) {
+  try {
+    await chrome.tabs.sendMessage(tabId, {
+      type: 'DEVVOCAB_HIGHLIGHT_OCCURRENCE',
+      locator,
+    })
+    onSent()
+  } catch {
+    if (attemptsRemaining <= 0) {
+      return
+    }
+
+    globalThis.setTimeout(() => {
+      void sendHighlightWhenReady(tabId, locator, onSent, attemptsRemaining - 1)
+    }, 250)
+  }
 }
 
 console.info('[DevVocab] background service worker ready')
