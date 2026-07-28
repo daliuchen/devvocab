@@ -1,0 +1,263 @@
+.page-shell {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.page-kicker {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.page-title {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+.page-description {
+  max-width: 560px;
+  margin-top: 10px;
+  color: var(--text);
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  width: min(100%, 520px);
+}
+
+.search-input,
+.filter-select {
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--text-h);
+  background: var(--surface);
+  font: inherit;
+}
+
+.search-input {
+  flex: 1 1 auto;
+}
+
+.filter-select {
+  flex: 0 0 140px;
+}
+
+.empty-state {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 48px;
+  background: var(--surface);
+}
+
+.empty-state h2 {
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  max-width: 560px;
+  color: var(--text);
+}
+
+.export-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.export-actions button,
+.detail-actions button,
+.occurrence-tabs button {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--text-h);
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.export-actions button:hover,
+.detail-actions button:hover,
+.occurrence-tabs button:hover {
+  border-color: var(--accent);
+}
+
+.export-actions span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.vocabulary-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.word-list,
+.word-detail {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.word-list {
+  overflow: hidden;
+}
+
+.word-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 14px;
+  color: var(--text-h);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.word-row:last-child {
+  border-bottom: 0;
+}
+
+.word-row[data-selected='true'] {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.word-row strong,
+.word-row small {
+  display: block;
+}
+
+.word-row small,
+.word-row em,
+.meta-line {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.word-detail {
+  padding: 24px;
+}
+
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-header h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.occurrence-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.occurrence-tabs button[data-selected='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.word-detail blockquote {
+  margin: 0 0 12px;
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+  color: var(--text-h);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.source-link {
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--text-h);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.field textarea {
+  min-height: 86px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--text-h);
+  background: var(--bg);
+  font: inherit;
+  font-weight: 400;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 760px) {
+  .page-shell {
+    width: min(100% - 28px, 1120px);
+    padding: 28px 0;
+  }
+
+  .page-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar {
+    width: 100%;
+  }
+
+  .vocabulary-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .export-actions,
+  .detail-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

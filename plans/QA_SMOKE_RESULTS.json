@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-07-28T13:50:09.360Z",
+  "profileDir": "/var/folders/fr/2nrd5s611673rd116_bc56yc0000gn/T/devvocab-qa-profile-9Oc0b8",
+  "extensionId": "pnfinbchhjeicfmepihdceaelbomjefc",
+  "sites": [
+    {
+      "name": "MDN",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "capture": true,
+      "popover": true,
+      "save": true,
+      "isolation": true,
+      "selectedText": "content",
+      "error": ""
+    },
+    {
+      "name": "React Docs",
+      "url": "https://react.dev/learn",
+      "capture": true,
+      "popover": true,
+      "save": true,
+      "isolation": true,
+      "selectedText": "Search",
+      "error": ""
+    },
+    {
+      "name": "GitHub README",
+      "url": "https://github.com/facebook/react",
+      "capture": true,
+      "popover": true,
+      "save": true,
+      "isolation": true,
+      "selectedText": "Platform",
+      "error": ""
+    },
+    {
+      "name": "Engineering Blog",
+      "url": "https://web.dev/articles",
+      "capture": true,
+      "popover": true,
+      "save": true,
+      "isolation": true,
+      "selectedText": "cookies",
+      "error": ""
+    }
+  ],
+  "resilience": {
+    "beforeRestartCount": 4,
+    "afterRestartCount": 4,
+    "passed": true
+  },
+  "management": {
+    "wordRows": 4,
+    "detailVisible": true,
+    "reopenHighlighted": true
+  },
+  "review": {
+    "loaded": true,
+    "revealed": true,
+    "outcomeRecorded": true
+  }
+}
