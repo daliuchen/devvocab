@@ -115,7 +115,7 @@ const sourcePagePromise = context.waitForEvent('page')
 await vocabularyPage.locator('.source-link').click()
 const sourcePage = await sourcePagePromise
 await sourcePage.waitForLoadState('domcontentloaded')
-await sourcePage.locator('.devvocab-highlight').waitFor({
+await sourcePage.locator('.devvocab-highlight-token').waitFor({
   state: 'visible',
   timeout: 10000,
 })

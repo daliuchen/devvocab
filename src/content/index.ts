@@ -227,15 +227,70 @@ function highlightLocatorMatch(
     return
   }
 
-  match.classList.add('devvocab-highlight')
-  match.scrollIntoView({
+  const token = highlightExactText(match, locator.textQuote.exact)
+  const highlightTarget = token ?? match
+
+  highlightTarget.classList.add('devvocab-highlight')
+  highlightTarget.scrollIntoView({
     behavior: 'smooth',
     block: 'center',
+    inline: 'nearest',
   })
 
   window.setTimeout(() => {
+    if (token) {
+      unwrapHighlightToken(token)
+      return
+    }
+
     match.classList.remove('devvocab-highlight')
-  }, 3200)
+  }, 12000)
+}
+
+function highlightExactText(root: Element, exactText: string) {
+  const exact = exactText.trim().toLowerCase()
+
+  if (!exact) {
+    return null
+  }
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+
+  while (walker.nextNode()) {
+    const textNode = walker.currentNode as Text
+    const text = textNode.textContent ?? ''
+    const index = text.toLowerCase().indexOf(exact)
+
+    if (index < 0) {
+      continue
+    }
+
+    const range = document.createRange()
+    range.setStart(textNode, index)
+    range.setEnd(textNode, index + exactText.trim().length)
+
+    const token = document.createElement('mark')
+    token.className = 'devvocab-highlight-token'
+    range.surroundContents(token)
+    return token
+  }
+
+  return null
+}
+
+function unwrapHighlightToken(token: HTMLElement) {
+  const parent = token.parentNode
+
+  if (!parent) {
+    return
+  }
+
+  while (token.firstChild) {
+    parent.insertBefore(token.firstChild, token)
+  }
+
+  token.remove()
+  parent.normalize()
 }
 
 function injectStyles() {
@@ -295,6 +350,14 @@ function injectStyles() {
     .devvocab-popover[data-state="error"] {
       border-color: #f04438;
       color: #b42318;
+    }
+
+    .devvocab-highlight,
+    .devvocab-highlight-token {
+      background: #fff3a3 !important;
+      color: inherit !important;
+      border-radius: 4px !important;
+      box-shadow: 0 0 0 3px rgba(255, 211, 77, 0.7) !important;
     }
 
     .devvocab-highlight {
