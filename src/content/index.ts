@@ -88,15 +88,19 @@ function showPopoverForSelection() {
   }
 
   popover.textContent = ''
-  popover.append(createSaveButton('Save word', saveCurrentSelection))
+  popover.append(createSaveButton(saveCurrentSelection))
   popover.hidden = false
 
   const popoverRect = popover.getBoundingClientRect()
-  const left = clamp(rect.left, 8, window.innerWidth - popoverRect.width - 8)
+  const left = clamp(
+    rect.right - popoverRect.width,
+    8,
+    window.innerWidth - popoverRect.width - 8,
+  )
   const rawTop =
-    rect.bottom + popoverRect.height + 8 > window.innerHeight
-      ? Math.max(8, rect.top - popoverRect.height - 8)
-      : rect.bottom + 8
+    rect.top - popoverRect.height - 8 < 8
+      ? rect.bottom + 8
+      : rect.top - popoverRect.height - 8
   const top = clamp(rawTop, 8, window.innerHeight - popoverRect.height - 8)
 
   popover.style.left = `${Math.round(left)}px`
@@ -169,10 +173,12 @@ function ensurePopover() {
   document.documentElement.append(popover)
 }
 
-function createSaveButton(label: string, onClick: () => void) {
+function createSaveButton(onClick: () => void) {
   const button = document.createElement('button')
   button.type = 'button'
-  button.textContent = label
+  button.textContent = '+'
+  button.title = 'Save to DevVocab'
+  button.ariaLabel = 'Save selected word to DevVocab'
   button.addEventListener('mousedown', (event) => {
     event.preventDefault()
   })
@@ -243,13 +249,13 @@ function injectStyles() {
     .devvocab-popover {
       position: fixed;
       z-index: 2147483647;
-      border: 1px solid #d0d5dd;
-      border-radius: 8px;
-      padding: 6px;
+      border: 1px solid rgba(17, 106, 92, 0.24);
+      border-radius: 999px;
+      padding: 2px;
       color: #101828;
       background: #ffffff;
-      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.18);
-      font: 13px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      box-shadow: 0 6px 16px rgba(16, 24, 40, 0.14);
+      font: 12px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     .devvocab-popover[hidden] {
@@ -257,13 +263,28 @@ function injectStyles() {
     }
 
     .devvocab-popover button {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
       border: 0;
-      border-radius: 6px;
-      padding: 7px 10px;
+      border-radius: 999px;
+      padding: 0;
       color: #ffffff;
       background: #116a5c;
-      font: inherit;
+      font: 700 20px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       cursor: pointer;
+    }
+
+    .devvocab-popover button:hover {
+      background: #0d574d;
+    }
+
+    .devvocab-popover[data-state] {
+      border-radius: 8px;
+      padding: 7px 9px;
+      background: #ffffff;
+      font: 12px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     .devvocab-popover[data-state="success"] {
