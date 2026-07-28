@@ -175,6 +175,23 @@
   font-size: 28px;
 }
 
+.word-title-button {
+  border: 0;
+  padding: 0;
+  color: var(--text-h);
+  background: transparent;
+  font: inherit;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  cursor: pointer;
+}
+
+.word-title-button:hover {
+  color: var(--accent);
+}
+
 .occurrence-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -194,6 +211,29 @@
   color: var(--text-h);
   font-size: 18px;
   line-height: 1.55;
+}
+
+.source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.source-open-button {
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--accent);
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.source-open-button:hover {
+  color: #ffffff;
+  background: var(--accent);
 }
 
 .source-link {
