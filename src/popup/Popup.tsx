@@ -1,0 +1,98 @@
+import { useEffect, useState } from 'react'
+import './Popup.css'
+import type { DevVocabStatsResponse } from '../shared/messages'
+
+type PopupStats = Pick<
+  DevVocabStatsResponse,
+  'totalWords' | 'dueReviews' | 'recentWords'
+>
+
+function Popup() {
+  const [stats, setStats] = useState<PopupStats>({
+    totalWords: 0,
+    dueReviews: 0,
+    recentWords: [],
+  })
+
+  useEffect(() => {
+    chrome.runtime
+      .sendMessage({ type: 'DEVVOCAB_GET_STATS' })
+      .then((response: DevVocabStatsResponse) => {
+        setStats({
+          totalWords: response.totalWords,
+          dueReviews: response.dueReviews,
+          recentWords: response.recentWords,
+        })
+      })
+      .catch(() => {
+        setStats({
+          totalWords: 0,
+          dueReviews: 0,
+          recentWords: [],
+        })
+      })
+  }, [])
+
+  function openPage(page: 'vocabulary' | 'review') {
+    void chrome.runtime.sendMessage({
+      type: 'DEVVOCAB_OPEN_PAGE',
+      page,
+    })
+  }
+
+  return (
+    <main className="popup-shell">
+      <header className="popup-header">
+        <div>
+          <h1 className="popup-title">DevVocab</h1>
+          <p className="popup-subtitle">Technical reading vocabulary</p>
+        </div>
+        <span className="status-pill">MVP</span>
+      </header>
+
+      <section className="stat-grid" aria-label="Vocabulary stats">
+        <div className="stat-card">
+          <span className="stat-value">{stats.totalWords}</span>
+          <span className="stat-label">saved words</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-value">{stats.dueReviews}</span>
+          <span className="stat-label">due reviews</span>
+        </div>
+      </section>
+
+      {stats.recentWords.length > 0 && (
+        <section className="recent-list" aria-label="Recent words">
+          <h2>Recent</h2>
+          <ul>
+            {stats.recentWords.map((word) => (
+              <li key={word.id}>
+                <span>{word.text}</span>
+                <small>{word.mastery}</small>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <nav className="popup-actions" aria-label="DevVocab actions">
+        <button
+          className="popup-button"
+          type="button"
+          onClick={() => openPage('vocabulary')}
+        >
+          Open vocabulary
+        </button>
+        <button
+          className="popup-button"
+          type="button"
+          onClick={() => openPage('review')}
+        >
+          Start review
+        </button>
+      </nav>
+    </main>
+  )
+}
+
+export default Popup

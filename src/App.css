@@ -1,0 +1,71 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: min(960px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 72px 0;
+}
+
+.intro-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 40px;
+  background: var(--surface);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.intro-copy {
+  max-width: 680px;
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.workflow-grid article {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  background: var(--surface);
+}
+
+.step {
+  display: block;
+  margin-bottom: 28px;
+  color: var(--muted);
+  font: 700 13px/1 var(--mono);
+}
+
+.workflow-grid p {
+  color: var(--text);
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(100% - 28px, 960px);
+    padding: 36px 0;
+  }
+
+  .intro-panel {
+    padding: 28px;
+  }
+
+  .workflow-grid {
+    grid-template-columns: 1fr;
+  }
+}
