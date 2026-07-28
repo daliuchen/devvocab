@@ -59,3 +59,17 @@ jobs:
         with:
           files: devvocab-extension.zip
           generate_release_notes: true
+
+      - name: Upload package to latest GitHub Release
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest extension build
+          body: |
+            Automated extension package from `${{ github.sha }}`.
+
+            Use version tags like `v0.1.0` for stable releases.
+          files: devvocab-extension.zip
+          prerelease: true
+          make_latest: false
