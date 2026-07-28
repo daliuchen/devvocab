@@ -11,9 +11,23 @@ import {
 import type {
   MasteryState,
   Occurrence,
+  Word,
   WordWithOccurrences,
 } from '../shared/models'
 import './VocabularyPage.css'
+
+type SourceMark = {
+  word: Word
+  occurrence: Occurrence
+}
+
+type SourceGroup = {
+  pageUrl: string
+  pageTitle: string
+  domain: string
+  latestAt: number
+  marks: SourceMark[]
+}
 
 function VocabularyPage() {
   const [items, setItems] = useState<WordWithOccurrences[]>([])
@@ -21,7 +35,9 @@ function VocabularyPage() {
   const [masteryFilter, setMasteryFilter] = useState<'all' | MasteryState>(
     'all',
   )
-  const [selectedWordId, setSelectedWordId] = useState<string | null>(null)
+  const [selectedSourceUrl, setSelectedSourceUrl] = useState<string | null>(
+    null,
+  )
   const [selectedOccurrenceId, setSelectedOccurrenceId] = useState<
     string | null
   >(null)
@@ -33,40 +49,70 @@ function VocabularyPage() {
     void reloadItems()
   }, [])
 
-  const filteredItems = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase()
+  const sourceGroups = useMemo(() => {
+    const groups = new Map<string, SourceGroup>()
 
-    return items.filter(({ word, occurrences }) => {
+    for (const { word, occurrences } of items) {
       if (masteryFilter !== 'all' && word.mastery !== masteryFilter) {
-        return false
+        continue
       }
 
+      for (const occurrence of occurrences) {
+        const existing = groups.get(occurrence.pageUrl)
+        const mark = { word, occurrence }
+
+        if (!existing) {
+          groups.set(occurrence.pageUrl, {
+            pageUrl: occurrence.pageUrl,
+            pageTitle: occurrence.pageTitle,
+            domain: occurrence.domain,
+            latestAt: occurrence.createdAt,
+            marks: [mark],
+          })
+          continue
+        }
+
+        existing.marks.push(mark)
+        existing.latestAt = Math.max(existing.latestAt, occurrence.createdAt)
+      }
+    }
+
+    return Array.from(groups.values()).sort((a, b) => b.latestAt - a.latestAt)
+  }, [items, masteryFilter])
+
+  const filteredSources = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase()
+
+    return sourceGroups.filter((source) => {
       if (!normalizedQuery) {
         return true
       }
 
       return [
-        word.text,
-        word.normalizedText,
-        ...occurrences.flatMap((occurrence) => [
+        source.pageTitle,
+        source.domain,
+        source.pageUrl,
+        ...source.marks.flatMap(({ word, occurrence }) => [
+          word.text,
+          word.normalizedText,
           occurrence.sentence,
-          occurrence.pageTitle,
-          occurrence.domain,
         ]),
       ]
         .join(' ')
         .toLowerCase()
         .includes(normalizedQuery)
     })
-  }, [items, masteryFilter, query])
+  }, [sourceGroups, query])
 
-  const selectedItem =
-    filteredItems.find((item) => item.word.id === selectedWordId) ??
-    filteredItems[0]
-  const selectedOccurrence =
-    selectedItem?.occurrences.find(
-      (occurrence) => occurrence.id === selectedOccurrenceId,
-    ) ?? selectedItem?.occurrences[0]
+  const selectedSource =
+    filteredSources.find((source) => source.pageUrl === selectedSourceUrl) ??
+    filteredSources[0]
+  const selectedMark =
+    selectedSource?.marks.find(
+      ({ occurrence }) => occurrence.id === selectedOccurrenceId,
+    ) ?? selectedSource?.marks[0]
+  const selectedWord = selectedMark?.word
+  const selectedOccurrence = selectedMark?.occurrence
 
   useEffect(() => {
     setDefinition(selectedOccurrence?.definition ?? '')
@@ -114,7 +160,7 @@ function VocabularyPage() {
     }
 
     await deleteWord(db, wordId)
-    setSelectedWordId(null)
+    setSelectedSourceUrl(null)
     setSelectedOccurrenceId(null)
     setStatus('Word deleted')
     await reloadItems()
@@ -144,11 +190,11 @@ function VocabularyPage() {
     <main className="page-shell">
       <header className="page-header">
         <div>
-          <p className="page-kicker">Vocabulary</p>
-          <h1 className="page-title">Saved technical words</h1>
+          <p className="page-kicker">ReadTrace Library</p>
+          <h1 className="page-title">Reading sources and saved marks</h1>
           <p className="page-description">
-            Search, filter, and revisit the words captured from technical
-            articles.
+            Browse the pages you read, inspect saved words in context, and jump
+            back to the original sentence.
           </p>
         </div>
 
@@ -187,58 +233,84 @@ function VocabularyPage() {
         {status && <span>{status}</span>}
       </section>
 
-      {filteredItems.length === 0 ? (
+      {filteredSources.length === 0 ? (
         <section className="empty-state">
-          <h2>No saved words yet</h2>
+          <h2>No saved marks yet</h2>
           <p>
-            Once capture is implemented, selected words and their original
-            sentences will appear here.
+            Select words while reading technical pages and ReadTrace will group
+            them by source here.
           </p>
         </section>
       ) : (
         <section className="vocabulary-layout">
-          <div className="word-list" aria-label="Saved words">
-            {filteredItems.map(({ word, occurrences }) => (
+          <div className="source-list" aria-label="Reading sources">
+            <div className="panel-heading">
+              <span>Sources</span>
+              <small>{filteredSources.length}</small>
+            </div>
+            {filteredSources.map((source) => (
               <button
-                className="word-row"
-                data-selected={word.id === selectedItem?.word.id}
-                key={word.id}
+                className="source-row"
+                data-selected={source.pageUrl === selectedSource?.pageUrl}
+                key={source.pageUrl}
                 type="button"
                 onClick={() => {
-                  setSelectedWordId(word.id)
+                  setSelectedSourceUrl(source.pageUrl)
                   setSelectedOccurrenceId(null)
                 }}
               >
                 <span>
-                  <strong>{word.text}</strong>
-                  <small>{occurrences.length} occurrences</small>
+                  <strong>{source.pageTitle}</strong>
+                  <small>{source.domain}</small>
                 </span>
-                <em>{word.mastery}</em>
+                <em>{source.marks.length} marks</em>
               </button>
             ))}
           </div>
 
-          {selectedItem && selectedOccurrence && (
+          {selectedSource && selectedWord && selectedOccurrence && (
+            <div className="mark-list" aria-label="Source marks">
+              <div className="panel-heading">
+                <span>Marks</span>
+                <small>{selectedSource.marks.length}</small>
+              </div>
+              {selectedSource.marks.map(({ word, occurrence }) => (
+                <button
+                  className="mark-row"
+                  data-selected={occurrence.id === selectedOccurrence.id}
+                  key={occurrence.id}
+                  type="button"
+                  onClick={() => setSelectedOccurrenceId(occurrence.id)}
+                >
+                  <strong>{word.text}</strong>
+                  <span>{occurrence.sentence}</span>
+                  <em>{word.mastery}</em>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {selectedSource && selectedWord && selectedOccurrence && (
             <article className="word-detail">
               <div className="detail-header">
                 <div>
-                  <p className="page-kicker">Selected word</p>
+                  <p className="page-kicker">Selected mark</p>
                   <button
                     className="word-title-button"
                     type="button"
                     title="Open the original page and highlight this occurrence"
                     onClick={() => handleOpenSource(selectedOccurrence.id)}
                   >
-                    {selectedItem.word.text}
+                    {selectedWord.text}
                   </button>
                 </div>
                 <select
                   className="filter-select"
                   aria-label="Update mastery"
-                  value={selectedItem.word.mastery}
+                  value={selectedWord.mastery}
                   onChange={(event) =>
                     void handleMasteryChange(
-                      selectedItem.word.id,
+                      selectedWord.id,
                       event.target.value as MasteryState,
                     )
                   }
@@ -249,18 +321,9 @@ function VocabularyPage() {
                 </select>
               </div>
 
-              <div className="occurrence-tabs" aria-label="Occurrences">
-                {selectedItem.occurrences.map((occurrence) => (
-                  <button
-                    key={occurrence.id}
-                    type="button"
-                    data-selected={occurrence.id === selectedOccurrence.id}
-                    title={`Select occurrence from ${occurrence.domain}`}
-                    onClick={() => setSelectedOccurrenceId(occurrence.id)}
-                  >
-                    {occurrence.domain}
-                  </button>
-                ))}
+              <div className="source-summary">
+                <span>{selectedSource.domain}</span>
+                <strong>{selectedSource.pageTitle}</strong>
               </div>
 
               <blockquote>{selectedOccurrence.sentence}</blockquote>
@@ -318,7 +381,7 @@ function VocabularyPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => void handleDeleteWord(selectedItem.word.id)}
+                  onClick={() => void handleDeleteWord(selectedWord.id)}
                 >
                   Delete word
                 </button>

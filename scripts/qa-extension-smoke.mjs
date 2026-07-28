@@ -39,7 +39,8 @@ const results = {
     passed: false,
   },
   management: {
-    wordRows: 0,
+    sourceRows: 0,
+    markRows: 0,
     detailVisible: false,
     reopenHighlighted: false,
   },
@@ -105,17 +106,20 @@ const vocabularyPage = await context.newPage()
 await vocabularyPage.goto(`chrome-extension://${extensionId}/vocabulary.html`)
 await vocabularyPage.waitForLoadState('domcontentloaded')
 await vocabularyPage.waitForTimeout(1000)
-results.management.wordRows = await vocabularyPage.locator('.word-row').count()
+results.management.sourceRows = await vocabularyPage
+  .locator('.source-row')
+  .count()
+results.management.markRows = await vocabularyPage.locator('.mark-row').count()
 results.management.detailVisible = await vocabularyPage
   .locator('.word-detail blockquote')
   .isVisible()
-results.resilience.beforeRestartCount = results.management.wordRows
+results.resilience.beforeRestartCount = results.management.sourceRows
 
 const sourcePagePromise = context.waitForEvent('page')
 await vocabularyPage.locator('.source-link').click()
 const sourcePage = await sourcePagePromise
 await sourcePage.waitForLoadState('domcontentloaded')
-await sourcePage.locator('.devvocab-highlight-token').waitFor({
+await sourcePage.locator('.devvocab-highlight-token').first().waitFor({
   state: 'visible',
   timeout: 10000,
 })
@@ -145,7 +149,7 @@ await afterRestartVocabularyPage.goto(
 await afterRestartVocabularyPage.waitForLoadState('domcontentloaded')
 await afterRestartVocabularyPage.waitForTimeout(1000)
 results.resilience.afterRestartCount = await afterRestartVocabularyPage
-  .locator('.word-row')
+  .locator('.source-row')
   .count()
 results.resilience.passed =
   results.resilience.beforeRestartCount > 0 &&
@@ -162,6 +166,7 @@ const failedSites = results.sites.filter(
 if (
   failedSites.length > 0 ||
   !results.resilience.passed ||
+  results.management.markRows === 0 ||
   !results.management.detailVisible ||
   !results.management.reopenHighlighted ||
   !results.review.loaded ||

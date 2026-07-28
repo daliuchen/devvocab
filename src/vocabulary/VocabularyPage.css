@@ -82,8 +82,7 @@
 }
 
 .export-actions button,
-.detail-actions button,
-.occurrence-tabs button {
+.detail-actions button {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 9px 12px;
@@ -94,8 +93,7 @@
 }
 
 .export-actions button:hover,
-.detail-actions button:hover,
-.occurrence-tabs button:hover {
+.detail-actions button:hover {
   border-color: var(--accent);
 }
 
@@ -106,26 +104,46 @@
 
 .vocabulary-layout {
   display: grid;
-  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  grid-template-columns:
+    minmax(220px, 280px) minmax(260px, 360px)
+    minmax(0, 1fr);
   gap: 16px;
 }
 
-.word-list,
+.source-list,
+.mark-list,
 .word-detail {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
 }
 
-.word-list {
+.source-list,
+.mark-list {
   overflow: hidden;
 }
 
-.word-row {
+.panel-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  color: var(--text-h);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.panel-heading small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.source-row,
+.mark-row {
+  display: flex;
   width: 100%;
   border: 0;
   border-bottom: 1px solid var(--border);
@@ -137,25 +155,71 @@
   cursor: pointer;
 }
 
-.word-row:last-child {
+.source-row {
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mark-row {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.source-row:last-child,
+.mark-row:last-child {
   border-bottom: 0;
 }
 
-.word-row[data-selected='true'] {
+.source-row[data-selected='true'],
+.mark-row[data-selected='true'] {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-.word-row strong,
-.word-row small {
+.source-row strong,
+.source-row small,
+.mark-row strong,
+.mark-row span,
+.mark-row em {
   display: block;
 }
 
-.word-row small,
-.word-row em,
+.source-row strong,
+.mark-row strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.source-row strong {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mark-row span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.source-row small,
+.source-row em,
+.mark-row em,
 .meta-line {
   color: var(--muted);
   font-size: 12px;
   font-style: normal;
+}
+
+.mark-row em {
+  align-self: flex-start;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
 }
 
 .word-detail {
@@ -168,11 +232,6 @@
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 16px;
-}
-
-.detail-header h2 {
-  margin: 0;
-  font-size: 28px;
 }
 
 .word-title-button {
@@ -192,16 +251,17 @@
   color: var(--accent);
 }
 
-.occurrence-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.source-summary {
+  display: grid;
+  gap: 4px;
   margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
 }
 
-.occurrence-tabs button[data-selected='true'] {
-  border-color: var(--accent);
-  color: var(--accent);
+.source-summary strong {
+  color: var(--text-h);
+  font-size: 15px;
 }
 
 .word-detail blockquote {

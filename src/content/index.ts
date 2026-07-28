@@ -258,6 +258,12 @@ function highlightExactText(root: Element, exactText: string) {
 
   while (walker.nextNode()) {
     const textNode = walker.currentNode as Text
+    const parentElement = textNode.parentElement
+
+    if (!parentElement || !isVisibleNode(parentElement)) {
+      continue
+    }
+
     const text = textNode.textContent ?? ''
     const index = text.toLowerCase().indexOf(exact)
 
@@ -276,6 +282,20 @@ function highlightExactText(root: Element, exactText: string) {
   }
 
   return null
+}
+
+function isVisibleNode(element: HTMLElement) {
+  const rect = element.getBoundingClientRect()
+  const style = window.getComputedStyle(element)
+
+  return (
+    style.display !== 'none' &&
+    style.visibility !== 'hidden' &&
+    style.opacity !== '0' &&
+    element.getClientRects().length > 0 &&
+    rect.width > 0 &&
+    rect.height > 0
+  )
 }
 
 function unwrapHighlightToken(token: HTMLElement) {
