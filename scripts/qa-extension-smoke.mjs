@@ -43,6 +43,7 @@ const results = {
     markRows: 0,
     detailVisible: false,
     reopenHighlighted: false,
+    reopenHighlightRestored: false,
     reopenHighlightPersisted: false,
   },
   review: {
@@ -124,6 +125,26 @@ await sourcePage.locator('.devvocab-highlight-token').first().waitFor({
   state: 'visible',
   timeout: 10000,
 })
+await sourcePage.evaluate(() => {
+  const token = document.querySelector('.devvocab-highlight-token')
+  const parent = token?.parentNode
+
+  if (!token || !parent) {
+    return
+  }
+
+  while (token.firstChild) {
+    parent.insertBefore(token.firstChild, token)
+  }
+
+  token.remove()
+  parent.normalize()
+})
+await sourcePage.locator('.devvocab-highlight-token').first().waitFor({
+  state: 'visible',
+  timeout: 5000,
+})
+results.management.reopenHighlightRestored = true
 await sourcePage.waitForTimeout(13000)
 results.management.reopenHighlightPersisted = await sourcePage
   .locator('.devvocab-highlight-token')
@@ -175,6 +196,7 @@ if (
   results.management.markRows === 0 ||
   !results.management.detailVisible ||
   !results.management.reopenHighlighted ||
+  !results.management.reopenHighlightRestored ||
   !results.management.reopenHighlightPersisted ||
   !results.review.loaded ||
   !results.review.revealed ||

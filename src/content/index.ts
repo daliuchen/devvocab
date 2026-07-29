@@ -18,6 +18,7 @@ import type {
 let popover: HTMLDivElement | null = null
 let statusTimer: number | null = null
 const SOURCE_HIGHLIGHT_DURATION_MS = 60_000
+const SOURCE_HIGHLIGHT_RESTORE_INTERVAL_MS = 1_000
 
 chrome.runtime.onMessage.addListener(
   (
@@ -222,29 +223,77 @@ function hidePopover() {
 function highlightLocatorMatch(
   locator: Parameters<typeof findLocatorMatch>[0],
 ) {
-  const match = findLocatorMatch(locator)
+  const expiresAt = Date.now() + SOURCE_HIGHLIGHT_DURATION_MS
+  const state = {
+    cleanup: () => {},
+    target: null as Element | null,
+    token: null as HTMLElement | null,
+  }
 
-  if (!match) {
+  const applyHighlight = (shouldScroll: boolean) => {
+    const match = findLocatorMatch(locator)
+
+    if (!match) {
+      return false
+    }
+
+    state.cleanup()
+    const token = highlightExactText(match, locator.textQuote.exact)
+    const highlightTarget = token ?? match
+
+    highlightTarget.classList.add('devvocab-highlight')
+
+    state.target = highlightTarget
+    state.token = token
+    state.cleanup = () => {
+      if (token?.isConnected) {
+        unwrapHighlightToken(token)
+        return
+      }
+
+      match.classList.remove('devvocab-highlight')
+    }
+
+    if (shouldScroll) {
+      highlightTarget.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      })
+    }
+
+    return true
+  }
+
+  if (!applyHighlight(true)) {
     return
   }
 
-  const token = highlightExactText(match, locator.textQuote.exact)
-  const highlightTarget = token ?? match
-
-  highlightTarget.classList.add('devvocab-highlight')
-  highlightTarget.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center',
-    inline: 'nearest',
-  })
-
-  window.setTimeout(() => {
-    if (token) {
-      unwrapHighlightToken(token)
+  const restoreHighlight = () => {
+    if (Date.now() >= expiresAt) {
       return
     }
 
-    match.classList.remove('devvocab-highlight')
+    if (!state.target?.isConnected) {
+      applyHighlight(false)
+    }
+  }
+
+  const observer = new MutationObserver(restoreHighlight)
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  })
+
+  const intervalId = window.setInterval(
+    restoreHighlight,
+    SOURCE_HIGHLIGHT_RESTORE_INTERVAL_MS,
+  )
+
+  window.setTimeout(() => {
+    observer.disconnect()
+    window.clearInterval(intervalId)
+    state.cleanup()
   }, SOURCE_HIGHLIGHT_DURATION_MS)
 }
 
