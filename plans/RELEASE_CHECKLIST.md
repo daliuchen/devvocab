@@ -18,7 +18,7 @@ To create a package from GitHub:
 2. Run `Build Extension Package` manually, or push to `main`.
 3. Wait for the workflow to pass.
 4. Download the `readtrace-extension` artifact, or open the `latest` prerelease.
-5. Confirm `readtrace-extension.zip` is attached.
+5. Confirm `readtrace-extension.zip` and `readtrace-firefox.zip` are attached.
 6. Upload `readtrace-extension.zip` to the Chrome Web Store Developer Dashboard.
 
 To publish a GitHub Release package:
@@ -26,11 +26,23 @@ To publish a GitHub Release package:
 1. Create and push a version tag, for example `v0.1.0`.
 2. Wait for `Build Extension Package` to pass for that tag.
 3. Confirm the workflow created or updated the matching GitHub Release.
-4. Confirm `readtrace-extension.zip` is attached to the Release assets.
+4. Confirm `readtrace-extension.zip` and `readtrace-firefox.zip` are attached to the Release assets.
 
 Pushes to `main` and manual workflow runs update the `latest` prerelease. Version tags like `v0.1.0` create stable releases.
 
 The zip is created from inside `dist`, so `manifest.json` is at the archive root as required by Chrome Web Store.
+
+## Firefox Package
+
+Local build:
+
+1. Run `npm run build:firefox`.
+2. Confirm `readtrace-firefox.zip` exists.
+3. In Firefox, open `about:debugging#/runtime/this-firefox`.
+4. Click `Load Temporary Add-on`.
+5. Select `dist-firefox/manifest.json`.
+
+The Firefox package uses Manifest V3 with `background.scripts` and `type: module`, while the Chrome package uses `background.service_worker`.
 
 ## Chrome Extension Metadata
 

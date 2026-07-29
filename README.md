@@ -34,6 +34,12 @@ Build the app:
 npm run build
 ```
 
+Build the Firefox package:
+
+```sh
+npm run build:firefox
+```
+
 Check formatting:
 
 ```sh
@@ -73,6 +79,8 @@ The current build includes:
 - `review.html` for the review page.
 - `assets/background.js` for the Manifest V3 background service worker.
 - `assets/content.js` for the webpage content script.
+
+For Firefox temporary testing, open `about:debugging#/runtime/this-firefox`, click `Load Temporary Add-on`, and select `dist-firefox/manifest.json`.
 
 ## QA Notes
 

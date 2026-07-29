@@ -46,6 +46,9 @@ jobs:
           cd dist
           zip -r ../readtrace-extension.zip .
 
+      - name: Create Firefox zip
+        run: node scripts/build-firefox-package.mjs
+
       - name: Upload extension package
         uses: actions/upload-artifact@v4
         with:
@@ -53,11 +56,20 @@ jobs:
           path: readtrace-extension.zip
           if-no-files-found: error
 
+      - name: Upload Firefox package
+        uses: actions/upload-artifact@v4
+        with:
+          name: readtrace-firefox
+          path: readtrace-firefox.zip
+          if-no-files-found: error
+
       - name: Upload package to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: readtrace-extension.zip
+          files: |
+            readtrace-extension.zip
+            readtrace-firefox.zip
           generate_release_notes: true
 
       - name: Upload package to latest GitHub Release
@@ -70,6 +82,8 @@ jobs:
             Automated extension package from `${{ github.sha }}`.
 
             Use version tags like `v0.1.0` for stable releases.
-          files: readtrace-extension.zip
+          files: |
+            readtrace-extension.zip
+            readtrace-firefox.zip
           prerelease: true
           make_latest: false
