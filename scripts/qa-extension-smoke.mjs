@@ -105,34 +105,32 @@ for (const site of sites) {
   }
 }
 
-const vocabularyPage = await context.newPage()
-await vocabularyPage.goto(`chrome-extension://${extensionId}/vocabulary.html`)
-await vocabularyPage.waitForLoadState('domcontentloaded')
-await vocabularyPage.waitForTimeout(1000)
-results.management.sourceRows = await vocabularyPage
-  .locator('.source-row')
-  .count()
-results.management.markRows = await vocabularyPage.locator('.mark-row').count()
-results.management.detailVisible = await vocabularyPage
+const libraryPage = await context.newPage()
+await libraryPage.goto(`chrome-extension://${extensionId}/library.html`)
+await libraryPage.waitForLoadState('domcontentloaded')
+await libraryPage.waitForTimeout(1000)
+results.management.sourceRows = await libraryPage.locator('.source-row').count()
+results.management.markRows = await libraryPage.locator('.mark-row').count()
+results.management.detailVisible = await libraryPage
   .locator('.word-detail blockquote')
   .isVisible()
 results.resilience.beforeRestartCount = results.management.sourceRows
-const firstMarkText = await vocabularyPage
+const firstMarkText = await libraryPage
   .locator('.mark-row strong')
   .first()
   .textContent()
 
 if (firstMarkText) {
-  await vocabularyPage.locator('.search-input').fill(firstMarkText)
-  await vocabularyPage.waitForTimeout(300)
+  await libraryPage.locator('.search-input').fill(firstMarkText)
+  await libraryPage.waitForTimeout(300)
   results.management.searchReturnedMarks =
-    (await vocabularyPage.locator('.mark-row').count()) > 0
-  await vocabularyPage.locator('.search-input').fill('')
-  await vocabularyPage.waitForTimeout(300)
+    (await libraryPage.locator('.mark-row').count()) > 0
+  await libraryPage.locator('.search-input').fill('')
+  await libraryPage.waitForTimeout(300)
 }
 
 const sourcePagePromise = context.waitForEvent('page')
-await vocabularyPage.locator('.source-link').click()
+await libraryPage.locator('.source-link').click()
 const sourcePage = await sourcePagePromise
 await sourcePage.waitForLoadState('domcontentloaded')
 await sourcePage.locator('.devvocab-highlight-token').first().waitFor({
@@ -178,24 +176,24 @@ await reviewPage.waitForTimeout(300)
 results.review.outcomeRecorded = true
 await reviewPage.close()
 
-await vocabularyPage.close()
+await libraryPage.close()
 await context.close()
 
 context = await launchContext(profileDir)
 extensionId = await resolveExtensionId(context)
-const afterRestartVocabularyPage = await context.newPage()
-await afterRestartVocabularyPage.goto(
-  `chrome-extension://${extensionId}/vocabulary.html`,
+const afterRestartLibraryPage = await context.newPage()
+await afterRestartLibraryPage.goto(
+  `chrome-extension://${extensionId}/library.html`,
 )
-await afterRestartVocabularyPage.waitForLoadState('domcontentloaded')
-await afterRestartVocabularyPage.waitForTimeout(1000)
-results.resilience.afterRestartCount = await afterRestartVocabularyPage
+await afterRestartLibraryPage.waitForLoadState('domcontentloaded')
+await afterRestartLibraryPage.waitForTimeout(1000)
+results.resilience.afterRestartCount = await afterRestartLibraryPage
   .locator('.source-row')
   .count()
 results.resilience.passed =
   results.resilience.beforeRestartCount > 0 &&
   results.resilience.afterRestartCount === results.resilience.beforeRestartCount
-await afterRestartVocabularyPage.close()
+await afterRestartLibraryPage.close()
 
 await writeFile(outputPath, `${JSON.stringify(results, null, 2)}\n`)
 await context.close()

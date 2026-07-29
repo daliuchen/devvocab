@@ -235,7 +235,7 @@ describe('export helpers', () => {
     expect(exported.reviews).toHaveLength(1)
   })
 
-  it('exports saved vocabulary as readable Markdown', async () => {
+  it('exports saved marks as readable Markdown', async () => {
     const db = createDatabase()
     await saveOccurrence(
       db,

@@ -14,9 +14,9 @@ export default defineConfig({
         app: resolve(__dirname, 'index.html'),
         background: resolve(__dirname, 'src/background/index.ts'),
         content: resolve(__dirname, 'src/content/index.ts'),
+        library: resolve(__dirname, 'library.html'),
         popup: resolve(__dirname, 'popup.html'),
         review: resolve(__dirname, 'review.html'),
-        vocabulary: resolve(__dirname, 'vocabulary.html'),
       },
       output: {
         entryFileNames: 'assets/[name].js',

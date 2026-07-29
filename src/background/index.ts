@@ -85,7 +85,7 @@ chrome.runtime.onMessage.addListener(
 
     if (message.type === 'DEVVOCAB_OPEN_PAGE') {
       const pageUrl = chrome.runtime.getURL(
-        message.page === 'vocabulary' ? 'vocabulary.html' : 'review.html',
+        message.page === 'review' ? 'review.html' : 'library.html',
       )
 
       chrome.tabs.create({ url: pageUrl })

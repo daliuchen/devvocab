@@ -14,7 +14,7 @@ import type {
   Word,
   WordWithOccurrences,
 } from '../shared/models'
-import './VocabularyPage.css'
+import './LibraryPage.css'
 
 type SourceMark = {
   word: Word
@@ -29,7 +29,7 @@ type SourceGroup = {
   marks: SourceMark[]
 }
 
-function VocabularyPage() {
+function LibraryPage() {
   const [items, setItems] = useState<WordWithOccurrences[]>([])
   const [query, setQuery] = useState('')
   const [masteryFilter, setMasteryFilter] = useState<'all' | MasteryState>(
@@ -199,7 +199,7 @@ function VocabularyPage() {
           </p>
         </div>
 
-        <div className="toolbar" aria-label="Vocabulary controls">
+        <div className="toolbar" aria-label="Library controls">
           <input
             className="search-input"
             type="search"
@@ -243,7 +243,7 @@ function VocabularyPage() {
           </p>
         </section>
       ) : (
-        <section className="vocabulary-layout">
+        <section className="library-layout">
           <div className="source-list" aria-label="Reading sources">
             <div className="panel-heading">
               <span>Sources</span>
@@ -420,4 +420,4 @@ function sourceMatchesQuery(source: SourceGroup, normalizedQuery: string) {
     .includes(normalizedQuery)
 }
 
-export default VocabularyPage
+export default LibraryPage

@@ -34,14 +34,14 @@ Latest smoke result is recorded in [QA_SMOKE_RESULTS.json](QA_SMOKE_RESULTS.json
 7. Confirm the ReadTrace popover appears without disrupting page layout.
 8. Click Save word.
 9. Open the popup and confirm saved word count updates.
-10. Open Vocabulary from the popup.
+10. Open Library from the popup.
 11. Confirm the word appears with source sentence, domain, and page title.
 12. Edit definition and note, reload, and confirm values persist.
 13. Change mastery state.
 14. Export JSON and Markdown.
 15. Open Review and reveal the card.
 16. Mark an outcome and confirm the queue advances.
-17. Return to Vocabulary and click the source button.
+17. Return to Library and click the source button.
 18. Confirm the original page opens and the matching context is highlighted.
 
 ## Content Script Isolation
@@ -65,5 +65,5 @@ Pass criteria:
 1. Save at least two words: Passed, 4 records saved in smoke test.
 2. Close and reopen Chrome: Passed, Playwright persistent profile restarted.
 3. Reload the extension: Passed, same unpacked extension loaded after restart.
-4. Confirm Vocabulary still shows saved records: Passed, 4 records before and after restart.
-5. Export JSON and confirm records are present: Covered by unit tests for export shape and vocabulary smoke data persistence.
+4. Confirm Library still shows saved records: Passed, 4 records before and after restart.
+5. Export JSON and confirm records are present: Covered by unit tests for export shape and library smoke data persistence.

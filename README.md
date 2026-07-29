@@ -7,7 +7,7 @@ A source-aware reading memory browser extension for developers reading technical
 - Select a word or phrase on a webpage and save it from the inline popover.
 - Save source sentence, paragraph context, URL, title, domain, and locator metadata.
 - Save from the Chrome context menu.
-- Manage saved vocabulary in `vocabulary.html`.
+- Manage saved marks in `library.html`.
 - Search and filter by word, context, domain, and mastery state.
 - Edit manual definitions and notes.
 - Export local data as JSON or Markdown.
@@ -69,7 +69,7 @@ Then:
 The current build includes:
 
 - `popup.html` for the extension popup.
-- `vocabulary.html` for the vocabulary management page.
+- `library.html` for the library management page.
 - `review.html` for the review page.
 - `assets/background.js` for the Manifest V3 background service worker.
 - `assets/content.js` for the webpage content script.

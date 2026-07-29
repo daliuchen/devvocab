@@ -33,7 +33,7 @@ function Popup() {
       })
   }, [])
 
-  function openPage(page: 'vocabulary' | 'review') {
+  function openPage(page: 'library' | 'review') {
     void chrome.runtime.sendMessage({
       type: 'DEVVOCAB_OPEN_PAGE',
       page,
@@ -50,7 +50,7 @@ function Popup() {
         <span className="status-pill">MVP</span>
       </header>
 
-      <section className="stat-grid" aria-label="Vocabulary stats">
+      <section className="stat-grid" aria-label="Library stats">
         <div className="stat-card">
           <span className="stat-value">{stats.totalWords}</span>
           <span className="stat-label">saved words</span>
@@ -79,9 +79,9 @@ function Popup() {
         <button
           className="popup-button"
           type="button"
-          onClick={() => openPage('vocabulary')}
+          onClick={() => openPage('library')}
         >
-          Open vocabulary
+          Open library
         </button>
         <button
           className="popup-button"

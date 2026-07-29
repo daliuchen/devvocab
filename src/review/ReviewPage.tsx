@@ -56,7 +56,7 @@ function ReviewPage() {
           </p>
           <h2>{currentCard.word.text}</h2>
           <p className="review-source">
-            {currentCard.occurrence?.pageTitle ?? 'Saved vocabulary'}
+            {currentCard.occurrence?.pageTitle ?? 'Saved mark'}
             {currentCard.occurrence?.domain
               ? ` · ${currentCard.occurrence.domain}`
               : ''}

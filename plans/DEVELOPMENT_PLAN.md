@@ -1,6 +1,6 @@
 # ReadTrace Development Plan
 
-ReadTrace is a context-first vocabulary browser extension for developers reading technical English articles. The product should help users capture unfamiliar words from real technical pages, preserve the original context, and review them later with source-aware flashcards.
+ReadTrace is a source-aware reading memory browser extension for developers reading technical English articles. The product should help users capture unfamiliar words from real technical pages, preserve the original context, and review them later with source-aware flashcards.
 
 ## Product Positioning
 
@@ -24,7 +24,7 @@ Included:
 - Show a lightweight lookup popover.
 - Save the word with its source sentence, page URL, page title, domain, timestamp, and locator data.
 - Store data locally in IndexedDB.
-- Provide an extension page for vocabulary management.
+- Provide an extension page for library management.
 - Search and filter saved words.
 - Review saved words using simple flashcards.
 - Track mastery state: `new`, `learning`, `known`.
@@ -88,10 +88,10 @@ Small extension popup for fast access.
 Responsibilities:
 
 - Show recent saved words.
-- Provide quick links to vocabulary and review pages.
+- Provide quick links to library and review pages.
 - Show basic stats.
 
-### Vocabulary Page
+### Library Page
 
 Main management page.
 
@@ -253,7 +253,7 @@ Deliverable:
 
 - User can select a word on a webpage and save it locally.
 
-### Milestone 3: Vocabulary Page
+### Milestone 3: Library Page
 
 - Build saved words list.
 - Show source sentence, page title, domain, and saved time.
@@ -263,7 +263,7 @@ Deliverable:
 
 Deliverable:
 
-- User can manage saved vocabulary from a dedicated page.
+- User can manage saved marks from a dedicated page.
 
 ### Milestone 4: Source Reopen and Highlight
 
@@ -304,7 +304,7 @@ Deliverable:
 2. Confirm it loads in Chrome.
 3. Implement the Dexie database.
 4. Implement selection capture and save.
-5. Build the vocabulary page.
+5. Build the library page.
 6. Implement return-to-source highlighting.
 7. Add review cards.
 

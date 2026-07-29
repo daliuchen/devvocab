@@ -53,7 +53,7 @@ export type ReadTraceStatsResponse = {
 
 export type ReadTraceOpenPageMessage = {
   type: 'DEVVOCAB_OPEN_PAGE'
-  page: 'vocabulary' | 'review'
+  page: 'library' | 'review' | 'library'
 }
 
 export type ReadTraceOpenSourceMessage = {

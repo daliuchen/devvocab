@@ -45,17 +45,17 @@ Recommended task shape:
 
 ## Phase 1: Project Foundation
 
-| ID    | Status | Task                                          | Depends On | Acceptance Criteria                                                        | Verification                                                           |
-| ----- | ------ | --------------------------------------------- | ---------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| F1-01 | done   | Scaffold Vite, React, and TypeScript project. | None       | `npm install`, `npm run dev`, and `npm run build` work.                    | Run install, dev startup, and production build locally.                |
-| F1-02 | done   | Add Manifest V3 extension structure.          | F1-01      | Build output contains a valid `manifest.json` loadable by Chrome.          | Load `dist` as an unpacked extension in Chrome.                        |
-| F1-03 | done   | Add popup entrypoint.                         | F1-02      | Extension popup renders a basic ReadTrace screen.                          | Open extension popup manually after loading unpacked extension.        |
-| F1-04 | done   | Add vocabulary page entrypoint.               | F1-02      | Extension can open a vocabulary page route or HTML entry.                  | Open vocabulary page from extension URL and confirm no console errors. |
-| F1-05 | done   | Add review page entrypoint.                   | F1-02      | Extension can open a review page route or HTML entry.                      | Open review page from extension URL and confirm no console errors.     |
-| F1-06 | done   | Add background service worker.                | F1-02      | Service worker starts without runtime errors.                              | Inspect extension service worker console in Chrome.                    |
-| F1-07 | done   | Add content script entrypoint.                | F1-02      | Content script loads on normal webpages and can respond to a ping message. | Send a ping message on a test webpage and verify response.             |
-| F1-08 | done   | Add linting and formatting setup.             | F1-01      | `npm run lint` and formatting scripts are documented and pass.             | Run lint and formatting check scripts.                                 |
-| F1-09 | done   | Document local extension loading workflow.    | F1-02      | README explains how to build and load unpacked extension in Chrome.        | Follow README steps on a fresh build.                                  |
+| ID    | Status | Task                                          | Depends On | Acceptance Criteria                                                        | Verification                                                        |
+| ----- | ------ | --------------------------------------------- | ---------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| F1-01 | done   | Scaffold Vite, React, and TypeScript project. | None       | `npm install`, `npm run dev`, and `npm run build` work.                    | Run install, dev startup, and production build locally.             |
+| F1-02 | done   | Add Manifest V3 extension structure.          | F1-01      | Build output contains a valid `manifest.json` loadable by Chrome.          | Load `dist` as an unpacked extension in Chrome.                     |
+| F1-03 | done   | Add popup entrypoint.                         | F1-02      | Extension popup renders a basic ReadTrace screen.                          | Open extension popup manually after loading unpacked extension.     |
+| F1-04 | done   | Add library page entrypoint.                  | F1-02      | Extension can open a library page route or HTML entry.                     | Open library page from extension URL and confirm no console errors. |
+| F1-05 | done   | Add review page entrypoint.                   | F1-02      | Extension can open a review page route or HTML entry.                      | Open review page from extension URL and confirm no console errors.  |
+| F1-06 | done   | Add background service worker.                | F1-02      | Service worker starts without runtime errors.                              | Inspect extension service worker console in Chrome.                 |
+| F1-07 | done   | Add content script entrypoint.                | F1-02      | Content script loads on normal webpages and can respond to a ping message. | Send a ping message on a test webpage and verify response.          |
+| F1-08 | done   | Add linting and formatting setup.             | F1-01      | `npm run lint` and formatting scripts are documented and pass.             | Run lint and formatting check scripts.                              |
+| F1-09 | done   | Document local extension loading workflow.    | F1-02      | README explains how to build and load unpacked extension in Chrome.        | Follow README steps on a fresh build.                               |
 
 ## Phase 2: Core Data Layer
 
@@ -90,13 +90,13 @@ Recommended task shape:
 | S4-03 | done   | Add save success and error states. | S4-02               | User sees clear feedback after save succeeds or fails.                     | Manual Chrome test covers success path and simulated failure path.   |
 | S4-04 | done   | Add context menu save action.      | C3-01, D2-04        | User can save selected text from Chrome context menu.                      | Manual Chrome test saves selected text using right-click menu.       |
 | S4-05 | done   | Add basic popup stats.             | D2-06, F1-03        | Popup shows recent saved words and total saved count.                      | Manual popup check after seeding or saving records.                  |
-| S4-06 | done   | Add popup navigation links.        | F1-03, F1-04, F1-05 | Popup can open vocabulary and review pages.                                | Manual popup check opens both pages successfully.                    |
+| S4-06 | done   | Add popup navigation links.        | F1-03, F1-04, F1-05 | Popup can open library and review pages.                                   | Manual popup check opens both pages successfully.                    |
 
-## Phase 5: Vocabulary Management Page
+## Phase 5: Library Management Page
 
 | ID    | Status | Task                             | Depends On   | Acceptance Criteria                                                     | Verification                                            |
 | ----- | ------ | -------------------------------- | ------------ | ----------------------------------------------------------------------- | ------------------------------------------------------- |
-| V5-01 | done   | Build vocabulary page layout.    | F1-04        | Page has search, filters, list area, and detail area or modal.          | Manual UI check at desktop and narrow viewport widths.  |
+| V5-01 | done   | Build library page layout.       | F1-04        | Page has search, filters, list area, and detail area or modal.          | Manual UI check at desktop and narrow viewport widths.  |
 | V5-02 | done   | Render saved words list.         | V5-01, D2-06 | Saved words appear with mastery state and occurrence count.             | Manual check with seeded data or saved words.           |
 | V5-03 | done   | Render occurrence details.       | V5-02        | User can view source sentence, page title, URL, domain, and saved time. | Manual check selects a word with multiple occurrences.  |
 | V5-04 | done   | Add search.                      | V5-02        | User can search by word, sentence, page title, and domain.              | Unit test filtering logic and manual UI search check.   |
@@ -105,20 +105,20 @@ Recommended task shape:
 | V5-07 | done   | Add note and definition editing. | V5-03        | User can edit note and definition for an occurrence.                    | Manual edit, reload page, and confirm persisted values. |
 | V5-08 | done   | Add delete actions.              | V5-02, V5-03 | User can delete a word or individual occurrence with confirmation.      | Manual delete check confirms database and UI update.    |
 | V5-09 | done   | Add JSON export.                 | V5-01, D2-07 | User can download all local data as JSON.                               | Manual export and validate downloaded JSON shape.       |
-| V5-10 | done   | Add Markdown export.             | V5-01, D2-07 | User can download saved vocabulary as readable Markdown.                | Manual export and inspect Markdown content.             |
+| V5-10 | done   | Add Markdown export.             | V5-01, D2-07 | User can download saved marks as readable Markdown.                     | Manual export and inspect Markdown content.             |
 
 ## Phase 6: Return to Source and Highlight
 
-| ID    | Status | Task                                      | Depends On   | Acceptance Criteria                                                                    | Verification                                                         |
-| ----- | ------ | ----------------------------------------- | ------------ | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| R6-01 | done   | Add open source action from occurrence.   | V5-03, F1-06 | Clicking source opens the original URL.                                                | Manual check opens source URL from occurrence detail.                |
-| R6-02 | done   | Pass locator data to destination tab.     | R6-01        | Background service worker can send the occurrence locator to the loaded tab.           | Manual check logs or debug UI confirm locator receipt.               |
-| R6-03 | done   | Implement selector-based matching.        | R6-02, C3-05 | Content script can find candidate node by saved selector.                              | Unit test with DOM fixture and manual source reopen check.           |
-| R6-04 | done   | Implement text quote matching.            | R6-02, C3-04 | Content script can match exact text with prefix and suffix.                            | Unit tests cover exact quote, prefix, and suffix matching.           |
-| R6-05 | done   | Implement fallback fuzzy matching.        | R6-04        | Content script can find likely match by sentence or paragraph when exact quote fails.  | Unit tests cover changed whitespace and mildly changed text.         |
-| R6-06 | done   | Implement scroll and temporary highlight. | R6-03, R6-04 | Matched text scrolls into view and receives temporary highlight styling.               | Manual Chrome check on a long page verifies scroll and highlight.    |
-| R6-07 | done   | Add failure fallback UI.                  | R6-05        | If matching fails, vocabulary page still shows saved sentence and source link clearly. | Manual check with intentionally changed or unavailable page content. |
-| R6-08 | done   | Add tests for locator matching utilities. | R6-04, R6-05 | Tests cover exact, changed whitespace, and missing selector scenarios.                 | Run locator matching unit tests.                                     |
+| ID    | Status | Task                                      | Depends On   | Acceptance Criteria                                                                   | Verification                                                         |
+| ----- | ------ | ----------------------------------------- | ------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| R6-01 | done   | Add open source action from occurrence.   | V5-03, F1-06 | Clicking source opens the original URL.                                               | Manual check opens source URL from occurrence detail.                |
+| R6-02 | done   | Pass locator data to destination tab.     | R6-01        | Background service worker can send the occurrence locator to the loaded tab.          | Manual check logs or debug UI confirm locator receipt.               |
+| R6-03 | done   | Implement selector-based matching.        | R6-02, C3-05 | Content script can find candidate node by saved selector.                             | Unit test with DOM fixture and manual source reopen check.           |
+| R6-04 | done   | Implement text quote matching.            | R6-02, C3-04 | Content script can match exact text with prefix and suffix.                           | Unit tests cover exact quote, prefix, and suffix matching.           |
+| R6-05 | done   | Implement fallback fuzzy matching.        | R6-04        | Content script can find likely match by sentence or paragraph when exact quote fails. | Unit tests cover changed whitespace and mildly changed text.         |
+| R6-06 | done   | Implement scroll and temporary highlight. | R6-03, R6-04 | Matched text scrolls into view and receives temporary highlight styling.              | Manual Chrome check on a long page verifies scroll and highlight.    |
+| R6-07 | done   | Add failure fallback UI.                  | R6-05        | If matching fails, library page still shows saved sentence and source link clearly.   | Manual check with intentionally changed or unavailable page content. |
+| R6-08 | done   | Add tests for locator matching utilities. | R6-04, R6-05 | Tests cover exact, changed whitespace, and missing selector scenarios.                | Run locator matching unit tests.                                     |
 
 ## Phase 7: Review Flow
 
@@ -158,7 +158,7 @@ Recommended task shape:
 2. Complete Phase 2 data layer.
 3. Complete Phase 3 capture utilities.
 4. Complete Phase 4 save interaction.
-5. Build the vocabulary page from Phase 5.
+5. Build the library page from Phase 5.
 6. Add return-to-source highlighting from Phase 6.
 7. Add review flow from Phase 7.
 8. Add definitions only after capture, storage, and review feel solid.

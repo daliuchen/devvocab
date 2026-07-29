@@ -102,7 +102,7 @@
   font-size: 13px;
 }
 
-.vocabulary-layout {
+.library-layout {
   display: grid;
   grid-template-columns:
     minmax(220px, 280px) minmax(260px, 360px)
@@ -351,7 +351,7 @@
     width: 100%;
   }
 
-  .vocabulary-layout {
+  .library-layout {
     grid-template-columns: 1fr;
   }
 
