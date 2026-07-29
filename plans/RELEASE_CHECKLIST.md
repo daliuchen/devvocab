@@ -38,6 +38,27 @@ The zip is created from inside `dist`, so `manifest.json` is at the archive root
 - Version source: `public/manifest.json`
 - Description: `Remember where technical words came from.`
 - Category: Productivity or Education
+- Store listing draft: [STORE_LISTING.md](STORE_LISTING.md)
+- Privacy policy draft: [../PRIVACY.md](../PRIVACY.md)
+
+## Icons
+
+Manifest icons are included:
+
+- `public/icons/readtrace-16.png`
+- `public/icons/readtrace-32.png`
+- `public/icons/readtrace-48.png`
+- `public/icons/readtrace-128.png`
+
+Source SVG:
+
+- `public/readtrace-icon.svg`
+
+Chrome Web Store still needs final promotional assets before public listing:
+
+- Small promo tile: 440 x 280.
+- Screenshots: at least one 1280 x 800 or 640 x 400 image.
+- Optional marquee promo tile: 1400 x 560.
 
 ## Permissions
 
