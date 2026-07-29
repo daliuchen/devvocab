@@ -42,6 +42,7 @@ const results = {
     sourceRows: 0,
     markRows: 0,
     detailVisible: false,
+    searchReturnedMarks: false,
     reopenHighlighted: false,
     reopenHighlightRestored: false,
     reopenHighlightPersisted: false,
@@ -116,6 +117,19 @@ results.management.detailVisible = await vocabularyPage
   .locator('.word-detail blockquote')
   .isVisible()
 results.resilience.beforeRestartCount = results.management.sourceRows
+const firstMarkText = await vocabularyPage
+  .locator('.mark-row strong')
+  .first()
+  .textContent()
+
+if (firstMarkText) {
+  await vocabularyPage.locator('.search-input').fill(firstMarkText)
+  await vocabularyPage.waitForTimeout(300)
+  results.management.searchReturnedMarks =
+    (await vocabularyPage.locator('.mark-row').count()) > 0
+  await vocabularyPage.locator('.search-input').fill('')
+  await vocabularyPage.waitForTimeout(300)
+}
 
 const sourcePagePromise = context.waitForEvent('page')
 await vocabularyPage.locator('.source-link').click()
@@ -195,6 +209,7 @@ if (
   !results.resilience.passed ||
   results.management.markRows === 0 ||
   !results.management.detailVisible ||
+  !results.management.searchReturnedMarks ||
   !results.management.reopenHighlighted ||
   !results.management.reopenHighlightRestored ||
   !results.management.reopenHighlightPersisted ||

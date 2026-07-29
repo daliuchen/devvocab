@@ -83,24 +83,25 @@ function VocabularyPage() {
   const filteredSources = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
 
-    return sourceGroups.filter((source) => {
+    return sourceGroups.flatMap((source) => {
       if (!normalizedQuery) {
-        return true
+        return [source]
       }
 
-      return [
-        source.pageTitle,
-        source.domain,
-        source.pageUrl,
-        ...source.marks.flatMap(({ word, occurrence }) => [
-          word.text,
-          word.normalizedText,
-          occurrence.sentence,
-        ]),
-      ]
-        .join(' ')
-        .toLowerCase()
-        .includes(normalizedQuery)
+      const matchingMarks = source.marks.filter((mark) =>
+        markMatchesQuery(mark, normalizedQuery),
+      )
+
+      if (matchingMarks.length > 0) {
+        return [
+          {
+            ...source,
+            marks: matchingMarks,
+          },
+        ]
+      }
+
+      return sourceMatchesQuery(source, normalizedQuery) ? [source] : []
     })
   }, [sourceGroups, query])
 
@@ -392,6 +393,31 @@ function VocabularyPage() {
       )}
     </main>
   )
+}
+
+function markMatchesQuery(mark: SourceMark, normalizedQuery: string) {
+  return [
+    mark.word.text,
+    mark.word.normalizedText,
+    mark.word.mastery,
+    mark.occurrence.sentence,
+    mark.occurrence.pageTitle,
+    mark.occurrence.domain,
+    mark.occurrence.pageUrl,
+    mark.occurrence.definition,
+    mark.occurrence.note,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+    .includes(normalizedQuery)
+}
+
+function sourceMatchesQuery(source: SourceGroup, normalizedQuery: string) {
+  return [source.pageTitle, source.domain, source.pageUrl]
+    .join(' ')
+    .toLowerCase()
+    .includes(normalizedQuery)
 }
 
 export default VocabularyPage
