@@ -17,6 +17,7 @@ import type {
 
 let popover: HTMLDivElement | null = null
 let statusTimer: number | null = null
+const SOURCE_HIGHLIGHT_DURATION_MS = 60_000
 
 chrome.runtime.onMessage.addListener(
   (
@@ -244,7 +245,7 @@ function highlightLocatorMatch(
     }
 
     match.classList.remove('devvocab-highlight')
-  }, 12000)
+  }, SOURCE_HIGHLIGHT_DURATION_MS)
 }
 
 function highlightExactText(root: Element, exactText: string) {

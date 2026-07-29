@@ -43,6 +43,7 @@ const results = {
     markRows: 0,
     detailVisible: false,
     reopenHighlighted: false,
+    reopenHighlightPersisted: false,
   },
   review: {
     loaded: false,
@@ -123,6 +124,11 @@ await sourcePage.locator('.devvocab-highlight-token').first().waitFor({
   state: 'visible',
   timeout: 10000,
 })
+await sourcePage.waitForTimeout(13000)
+results.management.reopenHighlightPersisted = await sourcePage
+  .locator('.devvocab-highlight-token')
+  .first()
+  .isVisible()
 results.management.reopenHighlighted = true
 await sourcePage.close().catch(() => {})
 
@@ -169,6 +175,7 @@ if (
   results.management.markRows === 0 ||
   !results.management.detailVisible ||
   !results.management.reopenHighlighted ||
+  !results.management.reopenHighlightPersisted ||
   !results.review.loaded ||
   !results.review.revealed ||
   !results.review.outcomeRecorded
