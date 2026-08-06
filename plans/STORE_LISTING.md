@@ -19,8 +19,7 @@ Use it to:
 - Capture technical words without losing their original context.
 - Browse saved marks by source page instead of only by word.
 - Reopen the original article and jump back to the highlighted word.
-- Add definitions and notes for later review.
-- Review saved words with source-aware cards.
+- Add definitions and notes to saved marks.
 - Export your local data as JSON or Markdown.
 
 ReadTrace stores data locally in your browser. It does not require an account and does not send saved words, page content, or browsing data to a server.
@@ -38,12 +37,12 @@ English
 1. Select a word on a technical article and show the small ReadTrace save button.
 2. Show the ReadTrace library with Sources, Marks, and Detail columns.
 3. Show a source page reopened with the saved word highlighted.
-4. Show the review card with source sentence context.
+4. Show definitions and notes on a saved mark.
 5. Show export actions on the library page.
 
 ## Privacy Disclosure Draft
 
-ReadTrace stores saved words, source sentences, page titles, page URLs, domains, notes, definitions, and review state locally in browser storage. This data is used only to provide capture, source lookup, review, and export features.
+ReadTrace stores saved words, source sentences, page titles, page URLs, domains, notes, and definitions locally in browser storage. This data is used only to provide capture, source lookup, note-taking, and export features.
 
 ReadTrace does not collect, sell, transmit, or share user data with the developer or third parties. The extension does not require account login and does not use remote analytics.
 

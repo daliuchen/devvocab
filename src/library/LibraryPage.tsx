@@ -6,14 +6,8 @@ import {
   deleteWord,
   getWordsWithOccurrences,
   updateOccurrenceDetails,
-  updateWordMastery,
 } from '../data/repository'
-import type {
-  MasteryState,
-  Occurrence,
-  Word,
-  WordWithOccurrences,
-} from '../shared/models'
+import type { Occurrence, Word, WordWithOccurrences } from '../shared/models'
 import './LibraryPage.css'
 
 type SourceMark = {
@@ -32,9 +26,6 @@ type SourceGroup = {
 function LibraryPage() {
   const [items, setItems] = useState<WordWithOccurrences[]>([])
   const [query, setQuery] = useState('')
-  const [masteryFilter, setMasteryFilter] = useState<'all' | MasteryState>(
-    'all',
-  )
   const [selectedSourceUrl, setSelectedSourceUrl] = useState<string | null>(
     null,
   )
@@ -53,10 +44,6 @@ function LibraryPage() {
     const groups = new Map<string, SourceGroup>()
 
     for (const { word, occurrences } of items) {
-      if (masteryFilter !== 'all' && word.mastery !== masteryFilter) {
-        continue
-      }
-
       for (const occurrence of occurrences) {
         const existing = groups.get(occurrence.pageUrl)
         const mark = { word, occurrence }
@@ -78,7 +65,7 @@ function LibraryPage() {
     }
 
     return Array.from(groups.values()).sort((a, b) => b.latestAt - a.latestAt)
-  }, [items, masteryFilter])
+  }, [items])
 
   const filteredSources = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
@@ -127,12 +114,6 @@ function LibraryPage() {
   async function reloadItems() {
     const nextItems = await getWordsWithOccurrences(db)
     setItems(nextItems)
-  }
-
-  async function handleMasteryChange(wordId: string, mastery: MasteryState) {
-    await updateWordMastery(db, wordId, mastery)
-    setStatus('Mastery updated')
-    await reloadItems()
   }
 
   async function handleSaveDetails(occurrence: Occurrence) {
@@ -208,19 +189,6 @@ function LibraryPage() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <select
-            className="filter-select"
-            aria-label="Filter by mastery"
-            value={masteryFilter}
-            onChange={(event) =>
-              setMasteryFilter(event.target.value as 'all' | MasteryState)
-            }
-          >
-            <option value="all">All states</option>
-            <option value="new">New</option>
-            <option value="learning">Learning</option>
-            <option value="known">Known</option>
-          </select>
         </div>
       </header>
 
@@ -285,7 +253,6 @@ function LibraryPage() {
                 >
                   <strong>{word.text}</strong>
                   <span>{occurrence.sentence}</span>
-                  <em>{word.mastery}</em>
                 </button>
               ))}
             </div>
@@ -305,21 +272,6 @@ function LibraryPage() {
                     {selectedWord.text}
                   </button>
                 </div>
-                <select
-                  className="filter-select"
-                  aria-label="Update mastery"
-                  value={selectedWord.mastery}
-                  onChange={(event) =>
-                    void handleMasteryChange(
-                      selectedWord.id,
-                      event.target.value as MasteryState,
-                    )
-                  }
-                >
-                  <option value="new">New</option>
-                  <option value="learning">Learning</option>
-                  <option value="known">Known</option>
-                </select>
               </div>
 
               <div className="source-summary">
@@ -399,7 +351,6 @@ function markMatchesQuery(mark: SourceMark, normalizedQuery: string) {
   return [
     mark.word.text,
     mark.word.normalizedText,
-    mark.word.mastery,
     mark.occurrence.sentence,
     mark.occurrence.pageTitle,
     mark.occurrence.domain,

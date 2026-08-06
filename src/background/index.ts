@@ -1,6 +1,5 @@
 import { db } from '../data/database'
 import {
-  getDueReviews,
   getOccurrenceWithLocator,
   getRecentWords,
   saveOccurrence,
@@ -58,16 +57,14 @@ chrome.runtime.onMessage.addListener(
     }
 
     if (message.type === 'DEVVOCAB_GET_STATS') {
-      Promise.all([db.words.count(), getDueReviews(db), getRecentWords(db, 3)])
-        .then(([totalWords, dueReviews, recentWords]) => {
+      Promise.all([db.words.count(), getRecentWords(db, 3)])
+        .then(([totalWords, recentWords]) => {
           sendResponse({
             type: 'DEVVOCAB_STATS',
             totalWords,
-            dueReviews: dueReviews.length,
             recentWords: recentWords.map((word) => ({
               id: word.id,
               text: word.text,
-              mastery: word.mastery,
             })),
           })
         })
@@ -75,7 +72,6 @@ chrome.runtime.onMessage.addListener(
           sendResponse({
             type: 'DEVVOCAB_STATS',
             totalWords: 0,
-            dueReviews: 0,
             recentWords: [],
           })
         })
@@ -84,9 +80,7 @@ chrome.runtime.onMessage.addListener(
     }
 
     if (message.type === 'DEVVOCAB_OPEN_PAGE') {
-      const pageUrl = chrome.runtime.getURL(
-        message.page === 'review' ? 'review.html' : 'library.html',
-      )
+      const pageUrl = chrome.runtime.getURL('library.html')
 
       chrome.tabs.create({ url: pageUrl })
     }

@@ -8,10 +8,9 @@ A source-aware reading memory browser extension for developers reading technical
 - Save source sentence, paragraph context, URL, title, domain, and locator metadata.
 - Save from the Chrome context menu.
 - Manage saved marks in `library.html`.
-- Search and filter by word, context, domain, and mastery state.
+- Search by word, context, source title, domain, and URL.
 - Edit manual definitions and notes.
 - Export local data as JSON or Markdown.
-- Review saved words with context-first flashcards in `review.html`.
 - Reopen the source page and highlight the saved context when the original text can be matched.
 
 ## Development
@@ -76,7 +75,6 @@ The current build includes:
 
 - `popup.html` for the extension popup.
 - `library.html` for the library management page.
-- `review.html` for the review page.
 - `assets/background.js` for the Manifest V3 background service worker.
 - `assets/content.js` for the webpage content script.
 

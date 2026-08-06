@@ -2,15 +2,11 @@ import { useEffect, useState } from 'react'
 import './Popup.css'
 import type { ReadTraceStatsResponse } from '../shared/messages'
 
-type PopupStats = Pick<
-  ReadTraceStatsResponse,
-  'totalWords' | 'dueReviews' | 'recentWords'
->
+type PopupStats = Pick<ReadTraceStatsResponse, 'totalWords' | 'recentWords'>
 
 function Popup() {
   const [stats, setStats] = useState<PopupStats>({
     totalWords: 0,
-    dueReviews: 0,
     recentWords: [],
   })
 
@@ -20,20 +16,18 @@ function Popup() {
       .then((response: ReadTraceStatsResponse) => {
         setStats({
           totalWords: response.totalWords,
-          dueReviews: response.dueReviews,
           recentWords: response.recentWords,
         })
       })
       .catch(() => {
         setStats({
           totalWords: 0,
-          dueReviews: 0,
           recentWords: [],
         })
       })
   }, [])
 
-  function openPage(page: 'library' | 'review') {
+  function openPage(page: 'library') {
     void chrome.runtime.sendMessage({
       type: 'DEVVOCAB_OPEN_PAGE',
       page,
@@ -47,17 +41,12 @@ function Popup() {
           <h1 className="popup-title">ReadTrace</h1>
           <p className="popup-subtitle">Technical reading memory</p>
         </div>
-        <span className="status-pill">MVP</span>
       </header>
 
       <section className="stat-grid" aria-label="Library stats">
         <div className="stat-card">
           <span className="stat-value">{stats.totalWords}</span>
-          <span className="stat-label">saved words</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-value">{stats.dueReviews}</span>
-          <span className="stat-label">due reviews</span>
+          <span className="stat-label">saved marks</span>
         </div>
       </section>
 
@@ -68,7 +57,6 @@ function Popup() {
             {stats.recentWords.map((word) => (
               <li key={word.id}>
                 <span>{word.text}</span>
-                <small>{word.mastery}</small>
               </li>
             ))}
           </ul>
@@ -82,13 +70,6 @@ function Popup() {
           onClick={() => openPage('library')}
         >
           Open library
-        </button>
-        <button
-          className="popup-button"
-          type="button"
-          onClick={() => openPage('review')}
-        >
-          Start review
         </button>
       </nav>
     </main>

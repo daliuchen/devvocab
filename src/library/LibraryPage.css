@@ -39,8 +39,7 @@
   width: min(100%, 520px);
 }
 
-.search-input,
-.filter-select {
+.search-input {
   height: 40px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -52,10 +51,6 @@
 
 .search-input {
   flex: 1 1 auto;
-}
-
-.filter-select {
-  flex: 0 0 140px;
 }
 
 .empty-state {
@@ -179,8 +174,7 @@
 .source-row strong,
 .source-row small,
 .mark-row strong,
-.mark-row span,
-.mark-row em {
+.mark-row span {
   display: block;
 }
 
@@ -208,18 +202,10 @@
 
 .source-row small,
 .source-row em,
-.mark-row em,
 .meta-line {
   color: var(--muted);
   font-size: 12px;
   font-style: normal;
-}
-
-.mark-row em {
-  align-self: flex-start;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 3px 8px;
 }
 
 .word-detail {

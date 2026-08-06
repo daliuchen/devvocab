@@ -43,17 +43,15 @@ export type ReadTraceGetStatsMessage = {
 export type ReadTraceStatsResponse = {
   type: 'DEVVOCAB_STATS'
   totalWords: number
-  dueReviews: number
   recentWords: Array<{
     id: string
     text: string
-    mastery: string
   }>
 }
 
 export type ReadTraceOpenPageMessage = {
   type: 'DEVVOCAB_OPEN_PAGE'
-  page: 'library' | 'review' | 'library'
+  page: 'library'
 }
 
 export type ReadTraceOpenSourceMessage = {

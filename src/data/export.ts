@@ -32,7 +32,7 @@ export async function exportAsMarkdown(db: ReadTraceDatabase): Promise<string> {
         .where('wordId')
         .equals(word.id)
         .toArray()
-      const lines = [`## ${word.text}`, '', `Mastery: ${word.mastery}`, '']
+      const lines = [`## ${word.text}`, '']
 
       for (const occurrence of occurrences) {
         lines.push(`- Source: [${occurrence.pageTitle}](${occurrence.pageUrl})`)

@@ -8,7 +8,7 @@ function App() {
         <h1>Trace technical reading back to its source.</h1>
         <p className="intro-copy">
           Save unfamiliar words from engineering articles with their source
-          sentence, page URL, and review state.
+          sentence, page URL, and source locator.
         </p>
       </section>
 
@@ -27,8 +27,8 @@ function App() {
         </article>
         <article>
           <span className="step">03</span>
-          <h2>Review</h2>
-          <p>Practice with flashcards that restore the original context.</p>
+          <h2>Reopen</h2>
+          <p>Jump back to the original page and highlight the saved mark.</p>
         </article>
       </section>
     </main>
