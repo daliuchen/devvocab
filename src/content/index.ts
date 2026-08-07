@@ -5,6 +5,7 @@ import {
   extractParagraphText,
   extractSelectedText,
   extractSentence,
+  type SelectionCapture,
 } from '../capture/text'
 import { findLocatorMatch } from '../capture/locator'
 import type {
@@ -14,6 +15,9 @@ import type {
   ReadTraceSelectionPayload,
   ReadTraceSelectionResponse,
 } from '../shared/messages'
+
+type HighlightLocator =
+  Parameters<typeof findLocatorMatch>[0] | ReadTraceSelectionPayload['locator']
 
 let popover: HTMLDivElement | null = null
 let statusTimer: number | null = null
@@ -40,7 +44,7 @@ chrome.runtime.onMessage.addListener(
     if (message.type === 'DEVVOCAB_GET_SELECTION') {
       sendResponse({
         type: 'DEVVOCAB_SELECTION',
-        payload: buildSelectionPayload(),
+        payload: getSelectionPayload(),
       })
 
       return false
@@ -110,7 +114,8 @@ function showPopoverForSelection() {
 }
 
 async function saveCurrentSelection() {
-  const payload = buildSelectionPayload()
+  const capture = extractSelectedText()
+  const payload = capture ? buildSelectionPayload(capture) : null
 
   if (!payload) {
     showStatus('No text selected', 'error')
@@ -127,6 +132,13 @@ async function saveCurrentSelection() {
   const result = response as ReadTraceSaveOccurrenceResponse
 
   if (result.ok) {
+    if (!capture || !highlightSelectionCapture(capture)) {
+      highlightLocatorMatch(payload.locator, {
+        shouldScroll: false,
+        durationMs: null,
+      })
+    }
+    window.getSelection()?.removeAllRanges()
     showStatus(result.created ? 'Saved' : 'Already saved', 'success')
     return
   }
@@ -134,13 +146,15 @@ async function saveCurrentSelection() {
   showStatus(result.error ?? 'Save failed', 'error')
 }
 
-function buildSelectionPayload(): ReadTraceSelectionPayload | null {
+function getSelectionPayload(): ReadTraceSelectionPayload | null {
   const capture = extractSelectedText()
 
-  if (!capture) {
-    return null
-  }
+  return capture ? buildSelectionPayload(capture) : null
+}
 
+function buildSelectionPayload(
+  capture: SelectionCapture,
+): ReadTraceSelectionPayload {
   const paragraphText = extractParagraphText(capture.container)
   const sentence = extractSentence(paragraphText, capture.selectedText)
   const canonicalUrl =
@@ -160,6 +174,17 @@ function buildSelectionPayload(): ReadTraceSelectionPayload | null {
       cssSelector: createCssSelector(capture.container),
       paragraphHash: createParagraphHash(paragraphText),
     },
+  }
+}
+
+function highlightSelectionCapture(capture: SelectionCapture) {
+  try {
+    const token = document.createElement('mark')
+    token.className = 'devvocab-highlight-token devvocab-highlight-saved'
+    capture.range.surroundContents(token)
+    return true
+  } catch {
+    return false
   }
 }
 
@@ -221,9 +246,15 @@ function hidePopover() {
 }
 
 function highlightLocatorMatch(
-  locator: Parameters<typeof findLocatorMatch>[0],
+  locator: HighlightLocator,
+  options: {
+    shouldScroll?: boolean
+    durationMs?: number | null
+  } = {},
 ) {
-  const expiresAt = Date.now() + SOURCE_HIGHLIGHT_DURATION_MS
+  const shouldScroll = options.shouldScroll ?? true
+  const durationMs = options.durationMs ?? SOURCE_HIGHLIGHT_DURATION_MS
+  const expiresAt = durationMs === null ? null : Date.now() + durationMs
   const state = {
     cleanup: () => {},
     target: null as Element | null,
@@ -231,7 +262,9 @@ function highlightLocatorMatch(
   }
 
   const applyHighlight = (shouldScroll: boolean) => {
-    const match = findLocatorMatch(locator)
+    const match = findLocatorMatch(
+      locator as Parameters<typeof findLocatorMatch>[0],
+    )
 
     if (!match) {
       return false
@@ -265,12 +298,12 @@ function highlightLocatorMatch(
     return true
   }
 
-  if (!applyHighlight(true)) {
+  if (!applyHighlight(shouldScroll)) {
     return
   }
 
   const restoreHighlight = () => {
-    if (Date.now() >= expiresAt) {
+    if (expiresAt !== null && Date.now() >= expiresAt) {
       return
     }
 
@@ -290,11 +323,13 @@ function highlightLocatorMatch(
     SOURCE_HIGHLIGHT_RESTORE_INTERVAL_MS,
   )
 
-  window.setTimeout(() => {
-    observer.disconnect()
-    window.clearInterval(intervalId)
-    state.cleanup()
-  }, SOURCE_HIGHLIGHT_DURATION_MS)
+  if (durationMs !== null) {
+    window.setTimeout(() => {
+      observer.disconnect()
+      window.clearInterval(intervalId)
+      state.cleanup()
+    }, durationMs)
+  }
 }
 
 function highlightExactText(root: Element, exactText: string) {

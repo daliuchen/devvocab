@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { db } from '../data/database'
-import { exportAsJson, exportAsMarkdown } from '../data/export'
+import {
+  exportAsJson,
+  exportAsMarkdown,
+  exportAsObsidianMarkdown,
+} from '../data/export'
 import {
   deleteOccurrence,
   deleteWord,
@@ -149,15 +153,21 @@ function LibraryPage() {
     await reloadItems()
   }
 
-  async function handleExport(format: 'json' | 'markdown') {
+  async function handleExport(format: 'json' | 'markdown' | 'obsidian') {
     const content =
-      format === 'json' ? await exportAsJson(db) : await exportAsMarkdown(db)
+      format === 'json'
+        ? await exportAsJson(db)
+        : format === 'obsidian'
+          ? await exportAsObsidianMarkdown(db)
+          : await exportAsMarkdown(db)
     const mime = format === 'json' ? 'application/json' : 'text/markdown'
     const extension = format === 'json' ? 'json' : 'md'
+    const suffix =
+      format === 'obsidian' ? 'obsidian' : format === 'markdown' ? 'notes' : ''
     const url = URL.createObjectURL(new Blob([content], { type: mime }))
     const link = document.createElement('a')
     link.href = url
-    link.download = `readtrace-export.${extension}`
+    link.download = `readtrace-export${suffix ? `-${suffix}` : ''}.${extension}`
     link.click()
     URL.revokeObjectURL(url)
   }
@@ -199,6 +209,9 @@ function LibraryPage() {
         </button>
         <button type="button" onClick={() => void handleExport('markdown')}>
           Export Markdown
+        </button>
+        <button type="button" onClick={() => void handleExport('obsidian')}>
+          Export Obsidian
         </button>
         {status && <span>{status}</span>}
       </section>

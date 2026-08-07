@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { ReadTraceDatabase } from './database'
-import { exportAsJson, exportAsMarkdown } from './export'
+import {
+  exportAsJson,
+  exportAsMarkdown,
+  exportAsObsidianMarkdown,
+} from './export'
 import {
   getAllWords,
   getDueReviews,
@@ -261,5 +265,32 @@ describe('export helpers', () => {
     expect(markdown).toContain(
       'Note: Similar to an interface in some contexts.',
     )
+  })
+
+  it('exports saved marks as Obsidian-friendly Markdown', async () => {
+    const db = createDatabase()
+    await saveOccurrence(
+      db,
+      createOccurrenceInput({
+        selectedText: 'trait',
+        sentence: 'A trait defines shared behavior in Rust.',
+        definition: 'A Rust abstraction for shared behavior.',
+      }),
+      1000,
+    )
+
+    const markdown = await exportAsObsidianMarkdown(
+      db,
+      new Date('2026-07-28T00:00:00.000Z'),
+    )
+
+    expect(markdown).toContain('source: ReadTrace')
+    expect(markdown).toContain('exported: 2026-07-28T00:00:00.000Z')
+    expect(markdown).toContain('## [[trait]]')
+    expect(markdown).toContain('- mastery:: new')
+    expect(markdown).toContain(
+      '#### [Fearless Concurrency](https://doc.rust-lang.org/book/ch16-00-concurrency.html)',
+    )
+    expect(markdown).toContain('  > A trait defines shared behavior in Rust.')
   })
 })
