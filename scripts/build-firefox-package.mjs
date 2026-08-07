@@ -26,6 +26,9 @@ manifest.browser_specific_settings = {
   gecko: {
     id: 'readtrace@daliuchen.github.io',
     strict_min_version: '121.0',
+    data_collection_permissions: {
+      required: ['none'],
+    },
   },
 }
 

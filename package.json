@@ -1,12 +1,13 @@
 {
   "name": "readtrace",
   "private": true,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:firefox": "npm run build && node scripts/build-firefox-package.mjs",
+    "build-for-amo": "npm run build:firefox",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "oxlint",
