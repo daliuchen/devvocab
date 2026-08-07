@@ -16,7 +16,7 @@ type SourceMark = {
 }
 
 type SourceGroup = {
-  pageUrl: string
+  sourceKey: string
   pageTitle: string
   domain: string
   latestAt: number
@@ -45,12 +45,13 @@ function LibraryPage() {
 
     for (const { word, occurrences } of items) {
       for (const occurrence of occurrences) {
-        const existing = groups.get(occurrence.pageUrl)
+        const sourceKey = getSourceKey(occurrence)
+        const existing = groups.get(sourceKey)
         const mark = { word, occurrence }
 
         if (!existing) {
-          groups.set(occurrence.pageUrl, {
-            pageUrl: occurrence.pageUrl,
+          groups.set(sourceKey, {
+            sourceKey,
             pageTitle: occurrence.pageTitle,
             domain: occurrence.domain,
             latestAt: occurrence.createdAt,
@@ -93,7 +94,7 @@ function LibraryPage() {
   }, [sourceGroups, query])
 
   const selectedSource =
-    filteredSources.find((source) => source.pageUrl === selectedSourceUrl) ??
+    filteredSources.find((source) => source.sourceKey === selectedSourceUrl) ??
     filteredSources[0]
   const selectedMark =
     selectedSource?.marks.find(
@@ -220,11 +221,11 @@ function LibraryPage() {
             {filteredSources.map((source) => (
               <button
                 className="source-row"
-                data-selected={source.pageUrl === selectedSource?.pageUrl}
-                key={source.pageUrl}
+                data-selected={source.sourceKey === selectedSource?.sourceKey}
+                key={source.sourceKey}
                 type="button"
                 onClick={() => {
-                  setSelectedSourceUrl(source.pageUrl)
+                  setSelectedSourceUrl(source.sourceKey)
                   setSelectedOccurrenceId(null)
                 }}
               >
@@ -365,10 +366,24 @@ function markMatchesQuery(mark: SourceMark, normalizedQuery: string) {
 }
 
 function sourceMatchesQuery(source: SourceGroup, normalizedQuery: string) {
-  return [source.pageTitle, source.domain, source.pageUrl]
+  return [source.pageTitle, source.domain, source.sourceKey]
     .join(' ')
     .toLowerCase()
     .includes(normalizedQuery)
+}
+
+function getSourceKey(occurrence: Occurrence) {
+  return occurrence.canonicalUrl ?? stripUrlHash(occurrence.pageUrl)
+}
+
+function stripUrlHash(url: string) {
+  try {
+    const parsed = new URL(url)
+    parsed.hash = ''
+    return parsed.toString()
+  } catch {
+    return url
+  }
 }
 
 export default LibraryPage

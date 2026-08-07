@@ -1,15 +1,15 @@
 .page-shell {
-  width: min(1120px, calc(100% - 40px));
+  width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 28px 0;
 }
 
 .page-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .page-kicker {
@@ -23,20 +23,20 @@
 .page-title {
   margin: 0;
   color: var(--text-h);
-  font-size: 34px;
+  font-size: 30px;
   line-height: 1.1;
 }
 
 .page-description {
   max-width: 560px;
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--text);
 }
 
 .toolbar {
   display: flex;
   gap: 10px;
-  width: min(100%, 520px);
+  width: min(100%, 480px);
 }
 
 .search-input {
@@ -73,7 +73,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .export-actions button,
@@ -100,9 +100,10 @@
 .library-layout {
   display: grid;
   grid-template-columns:
-    minmax(220px, 280px) minmax(260px, 360px)
+    minmax(220px, 280px) minmax(280px, 360px)
     minmax(0, 1fr);
   gap: 16px;
+  min-height: 0;
 }
 
 .source-list,
@@ -111,11 +112,12 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
+  max-height: calc(100svh - 230px);
 }
 
 .source-list,
 .mark-list {
-  overflow: hidden;
+  overflow: auto;
 }
 
 .panel-heading {
@@ -142,7 +144,7 @@
   width: 100%;
   border: 0;
   border-bottom: 1px solid var(--border);
-  padding: 14px;
+  padding: 12px 14px;
   color: var(--text-h);
   background: transparent;
   font: inherit;
@@ -208,8 +210,15 @@
   font-style: normal;
 }
 
+.source-row em {
+  flex: 0 0 auto;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .word-detail {
-  padding: 24px;
+  overflow: auto;
+  padding: 22px 24px;
 }
 
 .detail-header {
@@ -217,7 +226,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .word-title-button {
@@ -226,7 +235,7 @@
   color: var(--text-h);
   background: transparent;
   font: inherit;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   line-height: 1.15;
   text-align: left;
@@ -240,7 +249,7 @@
 .source-summary {
   display: grid;
   gap: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   color: var(--muted);
   font-size: 13px;
 }
@@ -251,11 +260,11 @@
 }
 
 .word-detail blockquote {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   border-left: 3px solid var(--accent);
   padding-left: 14px;
   color: var(--text-h);
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.55;
 }
 
@@ -264,7 +273,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .source-open-button {
@@ -297,14 +306,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 14px;
   color: var(--text-h);
   font-size: 13px;
   font-weight: 700;
 }
 
 .field textarea {
-  min-height: 86px;
+  min-height: 76px;
   resize: vertical;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -319,7 +328,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 @media (max-width: 760px) {
