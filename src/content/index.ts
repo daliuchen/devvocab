@@ -460,7 +460,7 @@ function injectStyles() {
     .devvocab-highlight,
     .devvocab-highlight-token {
       background: #fff3a3 !important;
-      color: inherit !important;
+      color: #1f2937 !important;
       border-radius: 4px !important;
       box-shadow: 0 0 0 3px rgba(255, 211, 77, 0.7) !important;
     }
@@ -469,6 +469,19 @@ function injectStyles() {
       outline: 3px solid #51c7a8 !important;
       outline-offset: 4px !important;
       transition: outline-color 180ms ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .devvocab-highlight,
+      .devvocab-highlight-token {
+        background: #f59e0b !important;
+        color: #111827 !important;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.38) !important;
+      }
+
+      .devvocab-highlight {
+        outline-color: #2dd4bf !important;
+      }
     }
   `
   document.documentElement.append(style)
