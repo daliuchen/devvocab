@@ -24,7 +24,7 @@ ReadTrace is a source-aware browser extension for technical reading. It helps us
 
 ## Product Direction
 
-- Keep the popup lightweight: current stats, recent saved marks, and a clear path to the library.
+- Keep the popup lightweight: saved mark count and a clear path to the library.
 - Treat the library page as the primary product surface for browsing saved sources and marks.
 - Preserve the core value: saved words must remain connected to source sentence, URL, title, domain, and locator metadata.
 - Do not expose unfinished review flows as primary UI unless the review experience and scheduling logic are intentionally brought back.

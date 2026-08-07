@@ -47,11 +47,6 @@ const results = {
     reopenHighlightRestored: false,
     reopenHighlightPersisted: false,
   },
-  review: {
-    loaded: false,
-    revealed: false,
-    outcomeRecorded: false,
-  },
 }
 
 let context = await launchContext(profileDir)
@@ -165,17 +160,6 @@ results.management.reopenHighlightPersisted = await sourcePage
 results.management.reopenHighlighted = true
 await sourcePage.close().catch(() => {})
 
-const reviewPage = await context.newPage()
-await reviewPage.goto(`chrome-extension://${extensionId}/review.html`)
-await reviewPage.waitForLoadState('domcontentloaded')
-results.review.loaded = await reviewPage.locator('.review-card h2').isVisible()
-await reviewPage.locator('.reveal-button').click()
-results.review.revealed = await reviewPage.locator('.review-back').isVisible()
-await reviewPage.getByRole('button', { name: 'Remembered' }).click()
-await reviewPage.waitForTimeout(300)
-results.review.outcomeRecorded = true
-await reviewPage.close()
-
 await libraryPage.close()
 await context.close()
 
@@ -210,10 +194,7 @@ if (
   !results.management.searchReturnedMarks ||
   !results.management.reopenHighlighted ||
   !results.management.reopenHighlightRestored ||
-  !results.management.reopenHighlightPersisted ||
-  !results.review.loaded ||
-  !results.review.revealed ||
-  !results.review.outcomeRecorded
+  !results.management.reopenHighlightPersisted
 ) {
   console.error(await readFile(outputPath, 'utf8'))
   process.exit(1)

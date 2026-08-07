@@ -2,7 +2,7 @@
 
 A source-aware reading memory browser extension for developers reading technical English articles.
 
-## MVP Features
+## Features
 
 - Select a word or phrase on a webpage and save it from the inline popover.
 - Save source sentence, paragraph context, URL, title, domain, and locator metadata.

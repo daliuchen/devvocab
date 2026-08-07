@@ -1,9 +1,5 @@
 import { db } from '../data/database'
-import {
-  getOccurrenceWithLocator,
-  getRecentWords,
-  saveOccurrence,
-} from '../data/repository'
+import { getOccurrenceWithLocator, saveOccurrence } from '../data/repository'
 import type {
   ReadTraceBackgroundMessage,
   ReadTraceSaveOccurrenceResponse,
@@ -57,22 +53,18 @@ chrome.runtime.onMessage.addListener(
     }
 
     if (message.type === 'DEVVOCAB_GET_STATS') {
-      Promise.all([db.words.count(), getRecentWords(db, 3)])
-        .then(([totalWords, recentWords]) => {
+      db.occurrences
+        .count()
+        .then((totalMarks) => {
           sendResponse({
             type: 'DEVVOCAB_STATS',
-            totalWords,
-            recentWords: recentWords.map((word) => ({
-              id: word.id,
-              text: word.text,
-            })),
+            totalMarks,
           })
         })
         .catch(() => {
           sendResponse({
             type: 'DEVVOCAB_STATS',
-            totalWords: 0,
-            recentWords: [],
+            totalMarks: 0,
           })
         })
 

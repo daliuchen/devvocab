@@ -12,14 +12,14 @@ Use this checklist before publishing or demoing the MVP.
 
 ## Technical Site Smoke Tests
 
-Run the capture, save, manage, review, and source-reopen flow on:
+Run the capture, save, manage, and source-reopen flow on:
 
-| Site            | URL                                                       | Capture | Manage | Review | Reopen | Notes                       |
-| --------------- | --------------------------------------------------------- | ------- | ------ | ------ | ------ | --------------------------- |
-| MDN             | `https://developer.mozilla.org/en-US/docs/Web/JavaScript` | Passed  | Passed | Passed | Passed | Selected `content`; saved.  |
-| React Docs      | `https://react.dev/learn`                                 | Passed  | Passed | Passed | Passed | Selected `Search`; saved.   |
-| GitHub README   | `https://github.com/facebook/react`                       | Passed  | Passed | Passed | Passed | Selected `Platform`; saved. |
-| Blog-style page | `https://web.dev/articles`                                | Passed  | Passed | Passed | Passed | Selected `cookies`; saved.  |
+| Site            | URL                                                       | Capture | Manage | Reopen | Notes                       |
+| --------------- | --------------------------------------------------------- | ------- | ------ | ------ | --------------------------- |
+| MDN             | `https://developer.mozilla.org/en-US/docs/Web/JavaScript` | Passed  | Passed | Passed | Selected `content`; saved.  |
+| React Docs      | `https://react.dev/learn`                                 | Passed  | Passed | Passed | Selected `Search`; saved.   |
+| GitHub README   | `https://github.com/facebook/react`                       | Passed  | Passed | Passed | Selected `Platform`; saved. |
+| Blog-style page | `https://web.dev/articles`                                | Passed  | Passed | Passed | Selected `cookies`; saved.  |
 
 Latest smoke result is recorded in [QA_SMOKE_RESULTS.json](QA_SMOKE_RESULTS.json).
 
@@ -37,12 +37,9 @@ Latest smoke result is recorded in [QA_SMOKE_RESULTS.json](QA_SMOKE_RESULTS.json
 10. Open Library from the popup.
 11. Confirm the word appears with source sentence, domain, and page title.
 12. Edit definition and note, reload, and confirm values persist.
-13. Change mastery state.
-14. Export JSON and Markdown.
-15. Open Review and reveal the card.
-16. Mark an outcome and confirm the queue advances.
-17. Return to Library and click the source button.
-18. Confirm the original page opens and the matching context is highlighted.
+13. Export JSON and Markdown.
+14. Click the source button.
+15. Confirm the original page opens and the matching context is highlighted.
 
 ## Content Script Isolation
 

@@ -12,7 +12,7 @@ function App() {
         </p>
       </section>
 
-      <section className="workflow-grid" aria-label="MVP workflow">
+      <section className="workflow-grid" aria-label="ReadTrace workflow">
         <article>
           <span className="step">01</span>
           <h2>Capture</h2>

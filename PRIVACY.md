@@ -13,11 +13,10 @@ ReadTrace stores the following data locally in your browser:
 - Page titles, URLs, canonical URLs, and domains.
 - Source locators used to reopen and highlight saved words.
 - Optional definitions and notes you enter.
-- Review state, including mastery status and review scheduling data.
 
 ## Data Collection
 
-ReadTrace does not collect, transmit, sell, or share your saved words, notes, source pages, browsing history, or review data with the developer or third parties.
+ReadTrace does not collect, transmit, sell, or share your saved words, notes, source pages, or browsing history with the developer or third parties.
 
 ReadTrace does not use remote analytics.
 

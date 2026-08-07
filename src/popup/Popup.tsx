@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 import './Popup.css'
 import type { ReadTraceStatsResponse } from '../shared/messages'
 
-type PopupStats = Pick<ReadTraceStatsResponse, 'totalWords' | 'recentWords'>
+type PopupStats = Pick<ReadTraceStatsResponse, 'totalMarks'>
 
 function Popup() {
   const [stats, setStats] = useState<PopupStats>({
-    totalWords: 0,
-    recentWords: [],
+    totalMarks: 0,
   })
 
   useEffect(() => {
@@ -15,14 +14,12 @@ function Popup() {
       .sendMessage({ type: 'DEVVOCAB_GET_STATS' })
       .then((response: ReadTraceStatsResponse) => {
         setStats({
-          totalWords: response.totalWords,
-          recentWords: response.recentWords,
+          totalMarks: response.totalMarks,
         })
       })
       .catch(() => {
         setStats({
-          totalWords: 0,
-          recentWords: [],
+          totalMarks: 0,
         })
       })
   }, [])
@@ -45,23 +42,10 @@ function Popup() {
 
       <section className="stat-grid" aria-label="Library stats">
         <div className="stat-card">
-          <span className="stat-value">{stats.totalWords}</span>
+          <span className="stat-value">{stats.totalMarks}</span>
           <span className="stat-label">saved marks</span>
         </div>
       </section>
-
-      {stats.recentWords.length > 0 && (
-        <section className="recent-list" aria-label="Recent words">
-          <h2>Recent</h2>
-          <ul>
-            {stats.recentWords.map((word) => (
-              <li key={word.id}>
-                <span>{word.text}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       <nav className="popup-actions" aria-label="ReadTrace actions">
         <button

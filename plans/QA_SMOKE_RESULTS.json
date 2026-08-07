@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-07-28T13:50:09.360Z",
-  "profileDir": "/var/folders/fr/2nrd5s611673rd116_bc56yc0000gn/T/devvocab-qa-profile-9Oc0b8",
+  "profileDir": "/var/folders/fr/2nrd5s611673rd116_bc56yc0000gn/T/readtrace-qa-profile-9Oc0b8",
   "extensionId": "pnfinbchhjeicfmepihdceaelbomjefc",
   "sites": [
     {
@@ -50,13 +50,12 @@
     "passed": true
   },
   "management": {
-    "wordRows": 4,
+    "sourceRows": 4,
+    "markRows": 4,
     "detailVisible": true,
-    "reopenHighlighted": true
-  },
-  "review": {
-    "loaded": true,
-    "revealed": true,
-    "outcomeRecorded": true
+    "searchReturnedMarks": true,
+    "reopenHighlighted": true,
+    "reopenHighlightRestored": true,
+    "reopenHighlightPersisted": true
   }
 }

@@ -42,11 +42,7 @@ export type ReadTraceGetStatsMessage = {
 
 export type ReadTraceStatsResponse = {
   type: 'DEVVOCAB_STATS'
-  totalWords: number
-  recentWords: Array<{
-    id: string
-    text: string
-  }>
+  totalMarks: number
 }
 
 export type ReadTraceOpenPageMessage = {

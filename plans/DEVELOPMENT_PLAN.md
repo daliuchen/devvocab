@@ -1,6 +1,6 @@
 # ReadTrace Development Plan
 
-ReadTrace is a source-aware reading memory browser extension for developers reading technical English articles. The product should help users capture unfamiliar words from real technical pages, preserve the original context, and review them later with source-aware flashcards.
+ReadTrace is a source-aware reading memory browser extension for developers reading technical English articles. The product should help users capture unfamiliar words from real technical pages, preserve the original context, and return to the exact source later.
 
 ## Product Positioning
 
@@ -10,8 +10,9 @@ Core promise:
 
 - Capture words directly from technical webpages.
 - Save the original sentence, page title, URL, and lightweight locator.
-- Review words later in the context where they were first encountered.
-- Explain words in developer-friendly technical context.
+- Browse saved marks by source page.
+- Reopen the original page and highlight the saved context.
+- Add developer-friendly definitions and notes manually.
 
 ## MVP Scope
 
@@ -25,9 +26,8 @@ Included:
 - Save the word with its source sentence, page URL, page title, domain, timestamp, and locator data.
 - Store data locally in IndexedDB.
 - Provide an extension page for library management.
-- Search and filter saved words.
-- Review saved words using simple flashcards.
-- Track mastery state: `new`, `learning`, `known`.
+- Search saved words and source context.
+- Edit definitions and notes.
 - Export data as JSON and Markdown.
 
 Excluded from MVP:
@@ -39,6 +39,7 @@ Excluded from MVP:
 - Full-page article snapshots.
 - Browser support beyond Chromium-based browsers.
 - Required AI API usage.
+- Review or spaced-repetition UI.
 
 ## Technical Stack
 
@@ -52,7 +53,7 @@ Excluded from MVP:
 - Testing:
   - Unit tests for text extraction, normalization, and locator matching.
   - Manual extension testing in Chrome.
-  - Playwright later for review page and extension page flows if needed.
+  - Playwright smoke tests for capture, library management, source reopen, and persistence.
 
 ## Main Extension Surfaces
 
@@ -68,7 +69,7 @@ Responsibilities:
 - Build a lightweight locator for returning to the source position.
 - Render an inline popover near the selection.
 - Send save requests to the extension runtime.
-- Highlight a saved occurrence when returning from the review page.
+- Highlight a saved occurrence when returning from the library page.
 
 ### Background Service Worker
 
@@ -87,9 +88,8 @@ Small extension popup for fast access.
 
 Responsibilities:
 
-- Show recent saved words.
-- Provide quick links to library and review pages.
-- Show basic stats.
+- Provide a quick link to the library.
+- Show saved mark count.
 
 ### Library Page
 
@@ -99,21 +99,9 @@ Responsibilities:
 
 - List saved words and occurrences.
 - Search by word, sentence, domain, or page title.
-- Filter by mastery state and domain.
-- Edit note, definition, and mastery state.
+- Edit note and definition.
 - Delete words or individual occurrences.
 - Export data.
-
-### Review Page
-
-Flashcard-style review page.
-
-Responsibilities:
-
-- Show word first.
-- Reveal sentence, source title, definition, and note.
-- Mark as remembered, uncertain, or forgotten.
-- Update mastery state and review metadata.
 
 ## Data Model
 
@@ -174,6 +162,8 @@ type Locator = {
 
 ### Review
 
+Review records are retained for local data compatibility and possible future experimentation. There is no active review UI in the current product surface.
+
 ```ts
 type Review = {
   id: string
@@ -230,7 +220,7 @@ When reopening:
 - Scaffold Vite + React + TypeScript.
 - Configure Manifest V3.
 - Add extension build structure.
-- Add content script, background service worker, popup, and options/review pages.
+- Add content script, background service worker, popup, and library page.
 - Add linting and formatting.
 - Add basic local development instructions.
 
@@ -257,8 +247,8 @@ Deliverable:
 
 - Build saved words list.
 - Show source sentence, page title, domain, and saved time.
-- Add search and filters.
-- Add delete and mastery update actions.
+- Add search.
+- Add delete and detail editing actions.
 - Add JSON export.
 
 Deliverable:
@@ -276,18 +266,7 @@ Deliverable:
 
 - User can jump from a saved word back to the original webpage context.
 
-### Milestone 5: Review Flow
-
-- Build flashcard review page.
-- Add simple review queue.
-- Track remembered, uncertain, and forgotten outcomes.
-- Update mastery state.
-
-Deliverable:
-
-- User can review saved words with original context.
-
-### Milestone 6: Dictionary and Technical Explanation
+### Milestone 5: Dictionary and Technical Explanation
 
 - Add a basic dictionary provider.
 - Add manual editing for definitions.
@@ -306,14 +285,14 @@ Deliverable:
 4. Implement selection capture and save.
 5. Build the library page.
 6. Implement return-to-source highlighting.
-7. Add review cards.
+7. Improve definition and note workflows.
 
 ## Open Product Decisions
 
 - Product name: `ReadTrace`.
 - Phrase capture: selected phrases are supported as raw selected text in MVP.
 - Dictionary provider: MVP is manual-only, with a provider interface kept for later integrations.
-- Review scheduling: MVP uses a simple local review queue and mastery transitions, not full spaced repetition.
+- Review scheduling: dormant data model only; no active review UI in the current product.
 - Browser target: publish and test Chromium-based browsers first.
 
 ## Quality Bar
