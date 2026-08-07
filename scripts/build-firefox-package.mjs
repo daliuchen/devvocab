@@ -25,10 +25,13 @@ manifest.background = {
 manifest.browser_specific_settings = {
   gecko: {
     id: 'readtrace@daliuchen.github.io',
-    strict_min_version: '121.0',
+    strict_min_version: '140.0',
     data_collection_permissions: {
       required: ['none'],
     },
+  },
+  gecko_android: {
+    strict_min_version: '142.0',
   },
 }
 
